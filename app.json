@@ -1,0 +1,12 @@
+{
+  "name": "recipelabmobileapp",
+  "displayName": "recipe-lab-mobile-app",
+  "expo": {
+    "name": "recipe-lab-mobile-app",
+    "slug": "recipe-lab-mobile-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
