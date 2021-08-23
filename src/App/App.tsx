@@ -1,11 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as SplashScreen from "expo-splash-screen";
-import firebase from "firebase";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { View } from "react-native";
 import "react-native-gesture-handler";
-import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import {
+  Appbar,
+  DarkTheme,
+  Provider as PaperProvider,
+  Text,
+} from "react-native-paper";
 import { GlobalLoadingContext } from "../components/GlobalLoading";
 import useAuthState from "../hooks/useAuthState";
 import HomeScreen from "../screens/HomeScreen";
@@ -14,7 +17,7 @@ import RecipeScreen, {
   RecipeScreenProps,
 } from "../screens/RecipeScreen/RecipeScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
-import NavBar from "./components/NavBar";
+import useWaitForInitialAuthState from "./hooks/useWaitForInitialAuthState";
 
 export type RootStackParamList = {
   Home: HomeScreenProps;
@@ -25,29 +28,15 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   const [globalLoading, setGlobalLoading] = useState(false);
   const authState = useAuthState();
-  useEffect(() => {
-    async function prepare() {
-      try {
-        await SplashScreen.preventAutoHideAsync();
-        const unsub = firebase.auth().onAuthStateChanged(async (s) => {
-          await SplashScreen.hideAsync();
-          unsub();
-        });
-      } catch (e) {
-        console.warn(e);
-      }
-    }
-
-    prepare();
-  }, []);
+  useWaitForInitialAuthState();
 
   return (
     <PaperProvider
       theme={{
-        ...DefaultTheme,
+        ...DarkTheme,
         dark: true,
         colors: {
-          ...DefaultTheme.colors,
+          ...DarkTheme.colors,
           text: "white",
           primary: "#a971e8",
           accent: "#7332bb",
@@ -57,18 +46,36 @@ export default function App() {
       <GlobalLoadingContext.Provider
         value={{ loading: globalLoading, setLoading: setGlobalLoading }}
       >
-        {!authState && <WelcomeScreen />}
-        {authState && (
-          <NavigationContainer>
+        <NavigationContainer>
+          {!authState && <WelcomeScreen />}
+          {authState && (
             <Stack.Navigator
               initialRouteName="Home"
-              screenOptions={{ header: (props) => <NavBar {...props} /> }}
+              screenOptions={{
+                headerTransparent: true,
+                headerBlurEffect: "extraLight",
+                header: () => (
+                  <Appbar.Header
+                    style={{ backgroundColor: "rgba(255,255,255,0.5)" }}
+                  >
+                    <Text>test</Text>
+                  </Appbar.Header>
+                ),
+              }}
             >
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Recipe" component={RecipeScreen} />
+              <Stack.Screen
+                // options={{ headerShown: false }}
+                name="Home"
+                component={HomeScreen}
+              />
+              <Stack.Screen
+                name="Recipe"
+                component={RecipeScreen}
+                options={{ headerShown: false }}
+              />
             </Stack.Navigator>
-          </NavigationContainer>
-        )}
+          )}
+        </NavigationContainer>
       </GlobalLoadingContext.Provider>
     </PaperProvider>
   );
