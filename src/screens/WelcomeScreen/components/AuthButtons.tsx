@@ -4,9 +4,12 @@ import { Button } from "react-native-paper";
 import firebase from "firebase";
 import { useState } from "react";
 
-export interface AuthButtonsProps {}
+export interface AuthButtonsProps {
+  onSignIn: () => void;
+}
 
 const AuthButtons: FC<AuthButtonsProps> = (props) => {
+  const { onSignIn } = props;
   const [loading, setLoading] = useState(false);
 
   return (
@@ -14,7 +17,7 @@ const AuthButtons: FC<AuthButtonsProps> = (props) => {
       <Button
         mode="contained"
         color="white"
-        onPress={() => {}}
+        onPress={onSignIn}
         style={{ marginBottom: 10 }}
         disabled={loading}
       >
