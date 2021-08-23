@@ -1,14 +1,7 @@
 import React, { FC } from "react";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import {
-  Card,
-  IconButton,
-  Surface,
-  Text,
-  Title,
-  useTheme,
-} from "react-native-paper";
+import { Card, Searchbar, Text } from "react-native-paper";
 import Screen from "../../components/Screen";
 import AddSheet from "./components/AddSheet";
 import Header from "./components/Header";
@@ -16,8 +9,6 @@ import Header from "./components/Header";
 export interface HomeScreenProps {}
 
 const HomeScreen: FC<HomeScreenProps> = (props) => {
-  // firebase.auth().signOut();
-
   return (
     <Screen>
       <Header />
@@ -27,6 +18,7 @@ const HomeScreen: FC<HomeScreenProps> = (props) => {
         }}
       >
         <View style={{ height: 130 }} />
+        <Searchbar value="" />
         {new Array(50).fill(0).map((_, i) => (
           <Card
             key={i}
@@ -42,6 +34,7 @@ const HomeScreen: FC<HomeScreenProps> = (props) => {
             </Card.Content>
           </Card>
         ))}
+        <Searchbar value="" />
         <View style={{ height: 100 }} />
       </ScrollView>
       <AddSheet />

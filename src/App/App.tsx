@@ -1,14 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { KeyboardAvoidingView, View } from "react-native";
 import "react-native-gesture-handler";
-import {
-  Appbar,
-  DarkTheme,
-  Provider as PaperProvider,
-  Text,
-} from "react-native-paper";
+import { DarkTheme, Provider as PaperProvider } from "react-native-paper";
 import { GlobalLoadingContext } from "../components/GlobalLoading";
 import useAuthState from "../hooks/useAuthState";
 import HomeScreen from "../screens/HomeScreen";
@@ -37,7 +31,7 @@ export default function App() {
         dark: true,
         colors: {
           ...DarkTheme.colors,
-          surface: "#171534",
+          surface: "#222",
           background: "#111",
           text: "white",
           primary: "#a971e8",

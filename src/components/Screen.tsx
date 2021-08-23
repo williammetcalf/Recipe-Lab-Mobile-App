@@ -10,7 +10,7 @@ const Screen: FC<ScreenProps> = (props) => {
 
   return (
     <KeyboardAvoidingView
-      behavior="position"
+      behavior="padding"
       {...rest}
       style={[style, { backgroundColor: colors.background }]}
     >

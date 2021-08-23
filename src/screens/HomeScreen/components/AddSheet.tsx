@@ -1,11 +1,6 @@
 import BottomSheet from "@gorhom/bottom-sheet";
 import React, { FC, useCallback, useRef, useState } from "react";
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  TextInput as NativeTextInput,
-  View,
-} from "react-native";
+import { Keyboard, TextInput as NativeTextInput, View } from "react-native";
 import {
   FAB,
   IconButton,
@@ -50,14 +45,14 @@ const AddSheet: FC<AddSheetProps> = (props) => {
         icon="plus"
         style={{ position: "absolute", bottom: 32, right: 20 }}
         onPress={() => {
-          sheetRef.current?.snapToIndex(0);
+          sheetRef.current?.expand();
           inputRef.current?.focus();
         }}
       />
       <BottomSheet
         ref={sheetRef}
         index={-1}
-        snapPoints={["15%"]}
+        snapPoints={["15%", "50%"]}
         backgroundStyle={{ backgroundColor: surface }}
         onChange={resetOnClose}
         enableOverDrag={false}
@@ -90,11 +85,17 @@ const AddSheet: FC<AddSheetProps> = (props) => {
           onChangeText={setName}
           style={{ backgroundColor: surface }}
           disabled={loading}
+          onFocus={() => {
+            sheetRef.current?.expand({ duration: 100 });
+          }}
+          onBlur={() => {
+            sheetRef.current?.snapToIndex(0);
+          }}
           onSubmitEditing={() => {
             setLoading(true);
             setTimeout(() => {
               alert("ok");
-              closeSheet();
+              // closeSheet();
               setLoading(false);
             }, 1000);
           }}
