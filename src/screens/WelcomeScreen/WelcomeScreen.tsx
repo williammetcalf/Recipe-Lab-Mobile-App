@@ -1,45 +1,53 @@
-import BottomSheet from "@gorhom/bottom-sheet";
-import React, { FC, useCallback, useEffect, useRef } from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
-import { Headline, useTheme } from "react-native-paper";
-import Logo from "../../assets/logo.svg";
-import AuthButtons from "./components/AuthButtons";
-import SignInSheet from "./components/SignInSheet";
+import React, { FC } from "react";
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from "react-native";
+import { Portal } from "react-native-paper";
+import Background from "../../assets/login-background.svg";
+import AnonAuthButton from "./components/AnonAuthButton";
+import EmailPasswordForm from "./components/EmailPasswordForm";
+import Header from "./components/Header";
 
 export interface WelcomeScreenProps {}
 
 const WelcomeScreen: FC<WelcomeScreenProps> = () => {
-  const { colors } = useTheme();
-  const { surface } = colors;
-  const sheetRef = useRef<BottomSheet>(null);
-
-  const openSignInSheet = useCallback(() => {
-    sheetRef.current?.expand();
-  }, [sheetRef.current]);
-  useEffect(() => {
-    sheetRef.current?.close();
-  }, [sheetRef.current]);
-
   return (
     <>
-      <SafeAreaView style={{ ...styles.container, backgroundColor: surface }}>
-        <Logo height="40%" width="80%" style={styles.logo} />
-        <Headline style={{ marginBottom: 200 }}>Recipe Lab</Headline>
-        <AuthButtons onSignIn={openSignInSheet} />
-        <View style={{ height: "5%" }} />
-        <SignInSheet ref={sheetRef} />
-      </SafeAreaView>
+      <Portal.Host>
+        <KeyboardAvoidingView behavior="position">
+          <SafeAreaView style={{ ...styles.container }}>
+            <Background
+              height="100%"
+              style={{ position: "absolute", top: 0, left: 0 }}
+            />
+            <Header />
+
+            <View style={{ flex: 1 }} />
+            <EmailPasswordForm containerStyle={styles.emailPasswordForm} />
+            <AnonAuthButton />
+
+            <View style={{ height: "5%" }} />
+          </SafeAreaView>
+        </KeyboardAvoidingView>
+      </Portal.Host>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    alignSelf: "center",
     flexDirection: "column",
     alignItems: "center",
     height: "100%",
+    width: "90%",
   },
-  logo: {},
+  emailPasswordForm: {
+    marginBottom: 150,
+  },
 });
 
 export default WelcomeScreen;

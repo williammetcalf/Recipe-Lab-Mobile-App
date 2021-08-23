@@ -19,7 +19,7 @@ const AddSheet: FC<AddSheetProps> = (props) => {
   const { surface } = colors;
   const sheetRef = useRef<BottomSheet>(null);
   const inputRef = useRef<NativeTextInput>(null);
-  const { loading, setLoading } = useGlobalLoading();
+  const [loading, setLoading] = useGlobalLoading();
   const [name, setName] = useState("");
 
   const closeSheet = useCallback(() => {

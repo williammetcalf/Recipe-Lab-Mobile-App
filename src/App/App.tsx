@@ -5,7 +5,7 @@ import firebase from "firebase";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import "react-native-gesture-handler";
-import { DarkTheme, Provider as PaperProvider } from "react-native-paper";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { GlobalLoadingContext } from "../components/GlobalLoading";
 import useAuthState from "../hooks/useAuthState";
 import HomeScreen from "../screens/HomeScreen";
@@ -44,13 +44,13 @@ export default function App() {
   return (
     <PaperProvider
       theme={{
-        ...DarkTheme,
+        ...DefaultTheme,
         dark: true,
         colors: {
-          ...DarkTheme.colors,
+          ...DefaultTheme.colors,
+          text: "white",
           primary: "#a971e8",
           accent: "#7332bb",
-          surface: "#222",
         },
       }}
     >

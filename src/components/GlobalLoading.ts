@@ -8,6 +8,7 @@ export const GlobalLoadingContext = createContext<{
   setLoading: () => {},
 });
 
-export function useGlobalLoading() {
-  return useContext(GlobalLoadingContext);
+export function useGlobalLoading(): [boolean, (loading: boolean) => void] {
+  const { loading, setLoading } = useContext(GlobalLoadingContext);
+  return [loading, setLoading];
 }

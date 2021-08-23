@@ -11,7 +11,7 @@ export interface HomeScreenProps {}
 const HomeScreen: FC<HomeScreenProps> = (props) => {
   const {} = props;
   const navigation = useNavigation();
-  const { loading } = useGlobalLoading();
+  const [loading] = useGlobalLoading();
   const items = useMemo(() => {
     return new Array(50).fill(0).map((_, i) => i);
   }, []);
