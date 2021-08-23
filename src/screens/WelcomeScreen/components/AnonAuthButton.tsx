@@ -18,7 +18,7 @@ const AnonAuthButton: FC<AnonAuthButtonProps> = (props) => {
           setLoading(true);
           await firebase.auth().signInAnonymously();
         } catch (err) {
-          console.error(err);
+          console.log(err);
         } finally {
           setLoading(false);
         }

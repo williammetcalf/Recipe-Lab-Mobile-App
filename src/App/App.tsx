@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { View } from "react-native";
+import { KeyboardAvoidingView, View } from "react-native";
 import "react-native-gesture-handler";
 import {
   Appbar,
@@ -37,6 +37,8 @@ export default function App() {
         dark: true,
         colors: {
           ...DarkTheme.colors,
+          surface: "#171534",
+          background: "#111",
           text: "white",
           primary: "#a971e8",
           accent: "#7332bb",
@@ -49,24 +51,11 @@ export default function App() {
         <NavigationContainer>
           {!authState && <WelcomeScreen />}
           {authState && (
-            <Stack.Navigator
-              initialRouteName="Home"
-              screenOptions={{
-                headerTransparent: true,
-                headerBlurEffect: "extraLight",
-                header: () => (
-                  <Appbar.Header
-                    style={{ backgroundColor: "rgba(255,255,255,0.5)" }}
-                  >
-                    <Text>test</Text>
-                  </Appbar.Header>
-                ),
-              }}
-            >
+            <Stack.Navigator initialRouteName="Home">
               <Stack.Screen
-                // options={{ headerShown: false }}
                 name="Home"
                 component={HomeScreen}
+                options={{ headerShown: false }}
               />
               <Stack.Screen
                 name="Recipe"

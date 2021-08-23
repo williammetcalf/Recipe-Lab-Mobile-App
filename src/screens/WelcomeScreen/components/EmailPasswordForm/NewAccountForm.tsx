@@ -65,8 +65,9 @@ const NewAccountForm: FC<NewAccountFormProps> = (props) => {
         primaryLabel="Create Account"
         primaryAction={createAccount}
         primaryDisabled={!password || password !== passwordRepeat}
-        secondaryLabel="Already Created"
+        secondaryLabel="Sign In"
         secondaryAction={() => onModeChange("existing")}
+        invertButtons
       />
     </>
   );

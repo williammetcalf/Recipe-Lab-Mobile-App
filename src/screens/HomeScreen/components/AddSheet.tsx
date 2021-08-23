@@ -1,6 +1,11 @@
 import BottomSheet from "@gorhom/bottom-sheet";
 import React, { FC, useCallback, useRef, useState } from "react";
-import { Keyboard, TextInput as NativeTextInput, View } from "react-native";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  TextInput as NativeTextInput,
+  View,
+} from "react-native";
 import {
   FAB,
   IconButton,
@@ -52,8 +57,8 @@ const AddSheet: FC<AddSheetProps> = (props) => {
       <BottomSheet
         ref={sheetRef}
         index={-1}
-        snapPoints={["30%"]}
-        backgroundStyle={{ backgroundColor: "#444" }}
+        snapPoints={["15%"]}
+        backgroundStyle={{ backgroundColor: surface }}
         onChange={resetOnClose}
         enableOverDrag={false}
         handleComponent={() => {
@@ -78,24 +83,22 @@ const AddSheet: FC<AddSheetProps> = (props) => {
           );
         }}
       >
-        <View style={{ paddingHorizontal: 16 }}>
-          <TextInput
-            ref={inputRef}
-            label="Recipe Name"
-            value={name}
-            onChangeText={setName}
-            style={{ backgroundColor: surface }}
-            disabled={loading}
-            onSubmitEditing={() => {
-              setLoading(true);
-              setTimeout(() => {
-                alert("ok");
-                closeSheet();
-                setLoading(false);
-              }, 10000);
-            }}
-          />
-        </View>
+        <TextInput
+          ref={inputRef}
+          label="Recipe Name"
+          value={name}
+          onChangeText={setName}
+          style={{ backgroundColor: surface }}
+          disabled={loading}
+          onSubmitEditing={() => {
+            setLoading(true);
+            setTimeout(() => {
+              alert("ok");
+              closeSheet();
+              setLoading(false);
+            }, 1000);
+          }}
+        />
       </BottomSheet>
     </>
   );

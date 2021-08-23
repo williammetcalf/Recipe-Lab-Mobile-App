@@ -10,11 +10,12 @@ export interface FormButtonsProps {
   primaryAction: () => void | Promise<void>;
   secondaryAction: () => void;
   primaryDisabled?: boolean;
+  invertButtons?: boolean;
 }
 
 const FormButtons: FC<FormButtonsProps> = (props) => {
   const { primaryLabel, primaryAction, primaryDisabled } = props;
-  const { secondaryLabel, secondaryAction } = props;
+  const { secondaryLabel, secondaryAction, invertButtons } = props;
   const [loading, setLoading] = useGlobalLoading();
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -25,14 +26,14 @@ const FormButtons: FC<FormButtonsProps> = (props) => {
       <View
         style={{
           marginTop: 12,
-          flexDirection: "row",
+          flexDirection: invertButtons ? "row-reverse" : "row",
           alignItems: "center",
           justifyContent: "space-around",
         }}
       >
         <Button
           mode="outlined"
-          style={{ flex: 1, marginRight: 4 }}
+          style={{ width: "48%" }}
           onPress={secondaryAction}
           color="rgba(255,255,255,0.9)"
           disabled={loading}
@@ -42,7 +43,7 @@ const FormButtons: FC<FormButtonsProps> = (props) => {
         <Button
           color="rgba(255,255,255,0.9)"
           mode="contained"
-          style={{ flex: 1, marginLeft: 4 }}
+          style={{ width: "48%" }}
           onPress={async () => {
             setLoading(true);
             try {

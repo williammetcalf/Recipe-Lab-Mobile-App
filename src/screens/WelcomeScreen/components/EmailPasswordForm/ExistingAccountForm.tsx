@@ -65,7 +65,7 @@ const ExistingAccountForm: FC<ExistingAccountFormProps> = (props) => {
       <FormButtons
         primaryLabel="Sign In"
         primaryAction={signIn}
-        secondaryLabel="Create Account"
+        secondaryLabel="New Account"
         secondaryAction={() => onModeChange("new")}
       />
     </>

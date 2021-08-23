@@ -1,46 +1,48 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { FC, useMemo } from "react";
+import React, { FC } from "react";
+import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Card, Headline, Paragraph } from "react-native-paper";
-import { useGlobalLoading } from "../../components/GlobalLoading";
+import {
+  Card,
+  IconButton,
+  Surface,
+  Text,
+  Title,
+  useTheme,
+} from "react-native-paper";
 import Screen from "../../components/Screen";
 import AddSheet from "./components/AddSheet";
+import Header from "./components/Header";
 
 export interface HomeScreenProps {}
 
 const HomeScreen: FC<HomeScreenProps> = (props) => {
-  const {} = props;
-  const navigation = useNavigation();
-  const [loading] = useGlobalLoading();
-  const items = useMemo(() => {
-    return new Array(50).fill(0).map((_, i) => i);
-  }, []);
+  // firebase.auth().signOut();
 
   return (
     <Screen>
-      <ScrollView style={{ padding: 12 }}>
-        <Headline>Your Recipies</Headline>
-
-        {items.map((i) => (
+      <Header />
+      <ScrollView
+        style={{
+          padding: 12,
+        }}
+      >
+        <View style={{ height: 130 }} />
+        {new Array(50).fill(0).map((_, i) => (
           <Card
             key={i}
+            onPress={() => {}}
             style={{
-              marginHorizontal: 0,
-              marginTop: 8,
+              marginTop: 4,
             }}
-            onPress={
-              !loading
-                ? () => {
-                    navigation.navigate("Recipe" as never);
-                  }
-                : undefined
-            }
           >
             <Card.Content>
-              <Paragraph>{i}</Paragraph>
+              <View>
+                <Text>{i}</Text>
+              </View>
             </Card.Content>
           </Card>
         ))}
+        <View style={{ height: 100 }} />
       </ScrollView>
       <AddSheet />
     </Screen>
