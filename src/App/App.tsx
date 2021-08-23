@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 import firebase from "firebase";
 import React, { useEffect } from "react";
-import { Text, View } from "react-native";
+import "react-native-gesture-handler";
 import { DarkTheme, Provider as PaperProvider } from "react-native-paper";
 import useAuthState from "../hooks/useAuthState";
 import HomeScreen from "../screens/HomeScreen";
@@ -45,8 +45,8 @@ export default function App() {
         dark: true,
         colors: {
           ...DarkTheme.colors,
-          primary: "#67399b",
-          accent: "#79629c",
+          primary: "#a971e8",
+          accent: "#7332bb",
           surface: "#222",
         },
       }}

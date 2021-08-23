@@ -1,9 +1,8 @@
 import React, { FC } from "react";
-import { ScrollViewProps } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { KeyboardAvoidingView, View, ViewProps } from "react-native";
 import { useTheme } from "react-native-paper";
 
-export interface ScreenProps extends ScrollViewProps {}
+export interface ScreenProps extends ViewProps {}
 
 const Screen: FC<ScreenProps> = (props) => {
   const { style } = props;
@@ -11,14 +10,14 @@ const Screen: FC<ScreenProps> = (props) => {
   const { surface } = colors;
 
   return (
-    <ScrollView
+    <KeyboardAvoidingView
       {...props}
+      behavior="position"
       style={[
         style,
         {
           height: "100%",
           backgroundColor: surface,
-          padding: 12,
         },
       ]}
     />

@@ -8,10 +8,10 @@ const NavBar: FC<NavBarProps> = (props) => {
   const { navigation, route } = props;
   const [menuOpen, setMenuOpen] = useState(false);
   const { colors } = useTheme();
-  const { text } = colors;
+  const { text, accent } = colors;
 
   return (
-    <Appbar.Header>
+    <Appbar.Header style={{ backgroundColor: accent, zIndex: 599 }}>
       {navigation.canGoBack() && (
         <Appbar.BackAction onPress={navigation.goBack} />
       )}

@@ -8,7 +8,7 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
   const {} = props;
 
   return (
-    <Screen bounces={false}>
+    <Screen>
       <Text>Recipe Page</Text>
     </Screen>
   );
