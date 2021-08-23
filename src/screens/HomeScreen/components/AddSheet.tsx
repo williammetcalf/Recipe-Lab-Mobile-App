@@ -1,18 +1,34 @@
 import BottomSheet from "@gorhom/bottom-sheet";
-import React, { FC, useRef } from "react";
-import { useCallback } from "react";
-import { useState } from "react";
-import { Keyboard, View, TextInput as NativeTextInput } from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { FAB, TextInput, Title } from "react-native-paper";
+import React, { FC, useCallback, useRef, useState } from "react";
+import { Keyboard, TextInput as NativeTextInput, View } from "react-native";
+import {
+  FAB,
+  IconButton,
+  TextInput,
+  Title,
+  useTheme,
+} from "react-native-paper";
+import { useGlobalLoading } from "../../../components/GlobalLoading";
+import useOnNavigate from "../../../hooks/useOnNavigate";
 
 export interface AddSheetProps {}
 
 const AddSheet: FC<AddSheetProps> = (props) => {
   const {} = props;
+  const { colors } = useTheme();
+  const { surface } = colors;
   const sheetRef = useRef<BottomSheet>(null);
   const inputRef = useRef<NativeTextInput>(null);
+  const { loading, setLoading } = useGlobalLoading();
   const [name, setName] = useState("");
+
+  const closeSheet = useCallback(() => {
+    sheetRef.current?.close();
+    inputRef.current?.blur();
+    Keyboard.dismiss();
+  }, [sheetRef, inputRef]);
+  useOnNavigate(closeSheet);
+
   const resetOnClose = useCallback(
     (idx: number) => {
       if (idx === -1) {
@@ -36,34 +52,50 @@ const AddSheet: FC<AddSheetProps> = (props) => {
       <BottomSheet
         ref={sheetRef}
         index={-1}
-        snapPoints={["35%"]}
-        enablePanDownToClose
-        backgroundStyle={{ backgroundColor: "#555" }}
+        snapPoints={["30%"]}
+        backgroundStyle={{ backgroundColor: "#444" }}
         onChange={resetOnClose}
+        enableOverDrag={false}
+        handleComponent={() => {
+          return (
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingLeft: 12,
+                paddingRight: 8,
+              }}
+            >
+              <Title>Start A New Recipe</Title>
+              <IconButton
+                icon="close"
+                size={24}
+                onPress={closeSheet}
+                disabled={loading}
+              />
+            </View>
+          );
+        }}
       >
-        <TouchableWithoutFeedback
-          onPress={Keyboard.dismiss}
-          style={{ height: "100%" }}
-        >
-          <View style={{ padding: 16 }}>
-            <Title>Start A New Recipe</Title>
-            <TextInput
-              ref={inputRef}
-              label="Recipe Name"
-              value={name}
-              onChangeText={setName}
-              returnKeyType="done"
-              enablesReturnKeyAutomatically
-              onSubmitEditing={(e) => {
-                Keyboard.dismiss();
-                alert("done");
-              }}
-              onBlur={() => {
-                sheetRef.current?.close();
-              }}
-            />
-          </View>
-        </TouchableWithoutFeedback>
+        <View style={{ paddingHorizontal: 16 }}>
+          <TextInput
+            ref={inputRef}
+            label="Recipe Name"
+            value={name}
+            onChangeText={setName}
+            style={{ backgroundColor: surface }}
+            disabled={loading}
+            onSubmitEditing={() => {
+              setLoading(true);
+              setTimeout(() => {
+                alert("ok");
+                closeSheet();
+                setLoading(false);
+              }, 10000);
+            }}
+          />
+        </View>
       </BottomSheet>
     </>
   );
