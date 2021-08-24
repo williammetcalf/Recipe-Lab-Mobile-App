@@ -1,6 +1,7 @@
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import Color from "color";
 import React, { FC, useCallback, useRef, useState } from "react";
 import { Keyboard, TextInput as NativeTextInput, View } from "react-native";
 import {
@@ -59,8 +60,10 @@ const AddSheet: FC<AddSheetProps> = (props) => {
       <BottomSheet
         ref={sheetRef}
         index={-1}
-        snapPoints={["15%", "50%"]}
-        backgroundStyle={{ backgroundColor: surface }}
+        snapPoints={["20%", "50%"]}
+        backgroundStyle={{
+          backgroundColor: Color(surface).darken(0.8).toString(),
+        }}
         onChange={resetOnClose}
         enableOverDrag={false}
         handleComponent={() => {
@@ -90,7 +93,7 @@ const AddSheet: FC<AddSheetProps> = (props) => {
           label="Recipe Name"
           value={name}
           onChangeText={setName}
-          style={{ backgroundColor: surface }}
+          style={{ backgroundColor: "transparent" }}
           disabled={loading}
           onFocus={() => {
             sheetRef.current?.expand({ duration: 100 });
