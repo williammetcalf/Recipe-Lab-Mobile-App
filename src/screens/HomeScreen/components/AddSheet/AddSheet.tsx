@@ -1,4 +1,3 @@
-import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Color from "color";
@@ -12,9 +11,11 @@ import {
   useTheme,
 } from "react-native-paper";
 import { RootStackParamList } from "../../../../App/App";
+import BottomSheet from "../../../../components/BottomSheet";
 import { useGlobalLoading } from "../../../../components/GlobalLoading";
 import useOnNavigate from "../../../../hooks/useOnNavigate";
 import useCreateRecipe from "./useCreateRecipe";
+import BottomSheetBase from "@gorhom/bottom-sheet";
 
 export interface AddSheetProps {}
 
@@ -22,7 +23,7 @@ const AddSheet: FC<AddSheetProps> = (props) => {
   const {} = props;
   const { colors } = useTheme();
   const { surface } = colors;
-  const sheetRef = useRef<BottomSheet>(null);
+  const sheetRef = useRef<BottomSheetBase>(null);
   const inputRef = useRef<NativeTextInput>(null);
   const [loading, setLoading] = useGlobalLoading();
   const [name, setName] = useState("");
@@ -59,34 +60,11 @@ const AddSheet: FC<AddSheetProps> = (props) => {
       />
       <BottomSheet
         ref={sheetRef}
-        index={-1}
         snapPoints={["20%", "50%"]}
-        backgroundStyle={{
-          backgroundColor: Color(surface).darken(0.8).toString(),
-        }}
         onChange={resetOnClose}
         enableOverDrag={false}
-        handleComponent={() => {
-          return (
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingLeft: 12,
-                paddingRight: 8,
-              }}
-            >
-              <Title>Start A New Recipe</Title>
-              <IconButton
-                icon="close"
-                size={24}
-                onPress={closeSheet}
-                disabled={loading}
-              />
-            </View>
-          );
-        }}
+        title="Start a new recipe"
+        onClose={closeSheet}
       >
         <TextInput
           ref={inputRef}

@@ -5,6 +5,7 @@ import "react-native-gesture-handler";
 import { DarkTheme, Provider as PaperProvider } from "react-native-paper";
 import { CurrentUserContext } from "../components/CurrentUserContext";
 import { GlobalLoadingContext } from "../components/GlobalLoading";
+import Screen from "../components/Screen";
 import useAuthState from "../hooks/useAuthState";
 import HomeScreen from "../screens/HomeScreen";
 import { HomeScreenProps } from "../screens/HomeScreen/HomeScreen";
@@ -47,7 +48,7 @@ export default function App() {
           {!authState && <WelcomeScreen />}
           {authState && (
             <CurrentUserContext.Provider value={authState}>
-              <Stack.Navigator initialRouteName="Home">
+              <Stack.Navigator initialRouteName="Home" screenOptions={{}}>
                 <Stack.Screen
                   name="Home"
                   component={HomeScreen}

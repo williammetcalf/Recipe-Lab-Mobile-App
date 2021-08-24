@@ -6,6 +6,7 @@ import React, { FC, useMemo } from "react";
 import { StyleSheet } from "react-native";
 import { Card, Text, useTheme } from "react-native-paper";
 import { RootStackParamList } from "../../../App/App";
+import useSurfaceColor from "../../../hooks/useSurfaceColor";
 import { Recipe } from "../../../types/Recipe";
 
 export interface RecipeCardProps {
@@ -14,23 +15,17 @@ export interface RecipeCardProps {
 
 const RecipeCard: FC<RecipeCardProps> = (props) => {
   const { recipe } = props;
-  const { colors } = useTheme();
-  const { surface } = colors;
   const { navigate } =
     useNavigation<NativeStackNavigationProp<RootStackParamList, "Recipe">>();
-
-  const cardColor = useMemo(
-    () => Color(surface).alpha(0.1).toString(),
-    [surface]
-  );
+  const surfaceColor = useSurfaceColor();
 
   return (
-    <Card style={[styles.card, { backgroundColor: cardColor }]}>
+    <Card style={[styles.card, { backgroundColor: surfaceColor }]}>
       <TouchableHighlight
         onPress={() => {
           navigate("Recipe", { uid: recipe._uid });
         }}
-        underlayColor={cardColor}
+        underlayColor={surfaceColor}
       >
         <Card.Content style={styles.content}>
           <Text style={styles.title}>{recipe.name}</Text>
