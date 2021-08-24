@@ -10,7 +10,6 @@ import HomeScreen from "../screens/HomeScreen";
 import { HomeScreenProps } from "../screens/HomeScreen/HomeScreen";
 import RecipeScreen, {
   RecipeScreenNavigationProps,
-  RecipeScreenProps,
 } from "../screens/RecipeScreen/RecipeScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import useWaitForInitialAuthState from "./hooks/useWaitForInitialAuthState";

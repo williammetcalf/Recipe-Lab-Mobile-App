@@ -102,7 +102,7 @@ const AddSheet: FC<AddSheetProps> = (props) => {
             setLoading(true);
             const uid = await createRecipe(name);
             closeSheet();
-            navigate("Recipe", { uid });
+            // navigate("Recipe", { uid });
           }}
         />
       </BottomSheet>

@@ -13,7 +13,7 @@ function useCreateRecipe() {
       return new Promise<string>(async (resolve, reject) => {
         try {
           setLoading(true);
-          const recipeRef = await ref.push(name);
+          const recipeRef = await ref.push({ name });
           resolve(recipeRef.key as string);
         } catch (err) {
           console.log(err);
