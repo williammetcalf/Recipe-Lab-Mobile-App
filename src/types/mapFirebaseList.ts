@@ -1,3 +1,5 @@
+import { FirebaseObject } from "./FirebaseObject";
+
 function mapFirebaseList<T extends FirebaseObject>(obj: {
   [key: string]: Omit<T, "_uid">;
 }): T[] {

@@ -1,3 +1,3 @@
-interface FirebaseObject {
+export interface FirebaseObject {
   _uid: string;
 }
