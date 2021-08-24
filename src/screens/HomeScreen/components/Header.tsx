@@ -10,7 +10,7 @@ const Header: FC<HeaderProps> = (props) => {
   const { colors } = useTheme();
   const { background } = colors;
   const headerColor = useMemo(
-    () => Color(background).alpha(0.9).toString(),
+    () => Color(background).alpha(0.2).toString(),
     [background]
   );
 
