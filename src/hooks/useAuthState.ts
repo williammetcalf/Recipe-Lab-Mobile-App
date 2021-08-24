@@ -6,7 +6,7 @@ function useAuthState() {
     null
   );
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(setAuthenticated);
+    return firebase.auth().onAuthStateChanged(setAuthenticated);
   }, [setAuthenticated]);
 
   return authenticated;

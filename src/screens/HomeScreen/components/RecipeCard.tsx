@@ -12,7 +12,7 @@ const RecipeCard: FC<RecipeCardProps> = (props) => {
   const { surface } = colors;
 
   const cardColor = useMemo(
-    () => Color(surface).alpha(0.7).toString(),
+    () => Color(surface).alpha(0.1).toString(),
     [surface]
   );
 
@@ -23,11 +23,7 @@ const RecipeCard: FC<RecipeCardProps> = (props) => {
         backgroundColor: cardColor,
       }}
     >
-      <TouchableHighlight
-        onPress={() => {}}
-        // activeOpacity={0.4}
-        underlayColor={cardColor}
-      >
+      <TouchableHighlight onPress={() => {}} underlayColor={cardColor}>
         <Card.Content style={{ height: 60 }}>
           <View></View>
         </Card.Content>

@@ -1,4 +1,6 @@
 import BottomSheet from "@gorhom/bottom-sheet";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { FC, useCallback, useRef, useState } from "react";
 import { Keyboard, TextInput as NativeTextInput, View } from "react-native";
 import {
@@ -8,8 +10,10 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
-import { useGlobalLoading } from "../../../components/GlobalLoading";
-import useOnNavigate from "../../../hooks/useOnNavigate";
+import { RootStackParamList } from "../../../../App/App";
+import { useGlobalLoading } from "../../../../components/GlobalLoading";
+import useOnNavigate from "../../../../hooks/useOnNavigate";
+import useCreateRecipe from "./useCreateRecipe";
 
 export interface AddSheetProps {}
 
@@ -21,6 +25,9 @@ const AddSheet: FC<AddSheetProps> = (props) => {
   const inputRef = useRef<NativeTextInput>(null);
   const [loading, setLoading] = useGlobalLoading();
   const [name, setName] = useState("");
+  const { navigate } =
+    useNavigation<NativeStackNavigationProp<RootStackParamList, "Recipe">>();
+  const createRecipe = useCreateRecipe();
 
   const closeSheet = useCallback(() => {
     sheetRef.current?.close();
@@ -91,13 +98,11 @@ const AddSheet: FC<AddSheetProps> = (props) => {
           onBlur={() => {
             sheetRef.current?.snapToIndex(0);
           }}
-          onSubmitEditing={() => {
+          onSubmitEditing={async () => {
             setLoading(true);
-            setTimeout(() => {
-              alert("ok");
-              // closeSheet();
-              setLoading(false);
-            }, 1000);
+            const uid = await createRecipe(name);
+            closeSheet();
+            navigate("Recipe", { uid });
           }}
         />
       </BottomSheet>
