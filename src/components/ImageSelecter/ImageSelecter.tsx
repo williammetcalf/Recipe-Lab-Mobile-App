@@ -3,7 +3,7 @@ import React, { forwardRef } from "react";
 import { useState } from "react";
 import { View } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { Button } from "react-native-paper";
+import { Button, Portal } from "react-native-paper";
 import BottomSheet, { BottomSheetProps } from "../BottomSheet";
 import SelectPhoto from "./SelectPhoto";
 import TakePhoto from "./TakePhoto";
@@ -19,31 +19,33 @@ const ImageSelecter = forwardRef<BottomSheetBase, ImageSelecterProps>(
     const [mode, setMode] = useState<null | "camera" | "library">(null);
 
     return (
-      <BottomSheet
-        title="Choose new photo"
-        enablePanDownToClose
-        onChange={() => setMode(null)}
-        {...props}
-        snapPoints={["25%"]}
-        ref={ref}
-      >
-        <View style={{ height: 300 }}>
-          <Button
-            mode="outlined"
-            onPress={() => setMode("camera")}
-            style={{ marginVertical: 12 }}
-          >
-            Take Photo
-          </Button>
-          <Button mode="outlined" onPress={() => setMode("library")}>
-            Select Photo From Library
-          </Button>
-        </View>
-        {mode === "library" && (
-          <SelectPhoto onImageSelected={onImageSelected} />
-        )}
-        {mode === "camera" && <TakePhoto onImageSelected={onImageSelected} />}
-      </BottomSheet>
+      <Portal>
+        <BottomSheet
+          title="Choose new photo"
+          enablePanDownToClose
+          onChange={() => setMode(null)}
+          {...props}
+          snapPoints={["25%"]}
+          ref={ref}
+        >
+          <View style={{ height: 300 }}>
+            <Button
+              mode="outlined"
+              onPress={() => setMode("camera")}
+              style={{ marginVertical: 12 }}
+            >
+              Take Photo
+            </Button>
+            <Button mode="outlined" onPress={() => setMode("library")}>
+              Select Photo From Library
+            </Button>
+          </View>
+          {mode === "library" && (
+            <SelectPhoto onImageSelected={onImageSelected} />
+          )}
+          {mode === "camera" && <TakePhoto onImageSelected={onImageSelected} />}
+        </BottomSheet>
+      </Portal>
     );
   }
 );

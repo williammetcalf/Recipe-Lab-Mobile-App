@@ -1,13 +1,12 @@
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { FC } from "react";
-import { useCallback } from "react";
-import { View } from "react-native";
-import { Button } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { FC, useCallback } from "react";
+import { useState } from "react";
+import { ScrollView, View } from "react-native";
+import { Card, Portal, Text } from "react-native-paper";
 import { RootStackParamList } from "../../App/App";
 import Screen from "../../components/Screen";
 import { Recipe } from "../../types/Recipe";
+import BackButton from "./components/BackButton";
 import RecipeTitleCard from "./components/RecipeTitleCard";
 import useRecipe from "./useRecipe";
 
@@ -29,34 +28,49 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
     },
     [recipeRef]
   );
-  const { canGoBack, goBack } = useNavigation();
-  console.log(recipe?.imageUri);
+  const [imageScale, setImageScale] = useState(1);
 
   return (
     <Screen>
-      <SafeAreaView
-        style={{
-          paddingTop: 10,
-          paddingBottom: 10,
-          paddingHorizontal: 12,
-          height: "100%",
-        }}
-      >
-        {canGoBack() && (
-          <View style={{ flexDirection: "row" }}>
-            <Button icon="arrow-left" onPress={goBack}>
-              Back
-            </Button>
-          </View>
-        )}
+      <Portal.Host>
         <RecipeTitleCard
+          style={{ position: "absolute", width: "100%" }}
           recipeName={recipe?.name || ""}
           imageUrl={recipe?.imageUri}
           onImageChanged={(uri) => {
             updateRecipe({ imageUri: uri });
           }}
+          scale={imageScale}
         />
-      </SafeAreaView>
+        <ScrollView
+          style={{ height: "100%" }}
+          scrollEventThrottle={1}
+          onScroll={(e) => {
+            const scroll = e.nativeEvent.contentOffset.y;
+            setImageScale(Math.max(0, Math.min(1, 1 - scroll / 250)));
+          }}
+        >
+          <View
+            style={{
+              paddingHorizontal: 12,
+              paddingTop: 250,
+              paddingBottom: 50,
+            }}
+          >
+            {new Array(50).fill(0).map((_, idx) => (
+              <Card
+                key={idx}
+                style={{ backgroundColor: "rgba(0,0,0,0.3)", marginTop: 16 }}
+              >
+                <Card.Content>
+                  <Text>Step {idx}: do some shit</Text>
+                </Card.Content>
+              </Card>
+            ))}
+          </View>
+        </ScrollView>
+        <BackButton />
+      </Portal.Host>
     </Screen>
   );
 };

@@ -1,6 +1,6 @@
 import BottomSheetBase, { TouchableOpacity } from "@gorhom/bottom-sheet";
 import React, { FC, useRef, useState } from "react";
-import { Image, Text, View } from "react-native";
+import { Image, StyleProp, Text, View, ViewStyle } from "react-native";
 import { Title } from "react-native-paper";
 import CameraSvg from "../../../assets/camera.svg";
 import ImageSelecter from "../../../components/ImageSelecter";
@@ -12,10 +12,12 @@ export interface RecipeTitleCardProps {
   recipeName: string;
   onImageChanged: (uri: string) => void;
   imageUrl?: string;
+  style?: StyleProp<ViewStyle>;
+  scale: number;
 }
 
 const RecipeTitleCard: FC<RecipeTitleCardProps> = (props) => {
-  const { recipeName, onImageChanged, imageUrl } = props;
+  const { recipeName, onImageChanged, imageUrl, style, scale } = props;
   const surfaceColor = useSurfaceColor(0.8);
   const [showCaptureOverlay, setShowCaptureOverlay] = useState(false);
   const sheetRef = useRef<BottomSheetBase>(null);
@@ -23,6 +25,7 @@ const RecipeTitleCard: FC<RecipeTitleCardProps> = (props) => {
   return (
     <>
       <TouchableOpacity
+        style={style}
         activeOpacity={0.8}
         onPressIn={() => setShowCaptureOverlay(true)}
         onPressOut={() => setShowCaptureOverlay(false)}
@@ -31,13 +34,18 @@ const RecipeTitleCard: FC<RecipeTitleCardProps> = (props) => {
           setShowCaptureOverlay(false);
         }}
       >
-        <View>
+        <View style={{ transform: [{ scale }] }}>
           {!imageUrl && (
             <BlankSvg width="100%" height={250} preserveAspectRatio="none" />
           )}
           {imageUrl && (
             <Image
-              style={{ width: "100%", height: 250, borderRadius: 20 }}
+              style={{
+                width: "100%",
+                height: 250,
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+              }}
               source={{ uri: imageUrl }}
             />
           )}
@@ -47,8 +55,8 @@ const RecipeTitleCard: FC<RecipeTitleCardProps> = (props) => {
               bottom: 0,
               backgroundColor: surfaceColor,
               width: "100%",
-              borderBottomEndRadius: 20,
-              borderBottomStartRadius: 20,
+              borderBottomLeftRadius: 10,
+              borderBottomRightRadius: 10,
             }}
           >
             <Title
