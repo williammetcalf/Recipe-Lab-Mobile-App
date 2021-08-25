@@ -1,14 +1,20 @@
+import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { FC, useCallback } from "react";
 import { useState } from "react";
+import { Image } from "react-native";
 import { ScrollView, View } from "react-native";
-import { Card, Portal, Text } from "react-native-paper";
+import { Button, Card, Portal, Text, Title } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { RootStackParamList } from "../../App/App";
+import ImageSelecter from "../../components/ImageSelecter";
+import ParallaxHeader from "../../components/ParallaxHeader";
 import Screen from "../../components/Screen";
 import { Recipe } from "../../types/Recipe";
 import BackButton from "./components/BackButton";
 import RecipeTitleCard from "./components/RecipeTitleCard";
 import useRecipe from "./useRecipe";
+import { BlurView } from "expo-blur";
 
 export type RecipeScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -28,49 +34,58 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
     },
     [recipeRef]
   );
-  const [imageScale, setImageScale] = useState(1);
 
   return (
     <Screen>
-      <Portal.Host>
-        <RecipeTitleCard
-          style={{ position: "absolute", width: "100%" }}
-          recipeName={recipe?.name || ""}
-          imageUrl={recipe?.imageUri}
-          onImageChanged={(uri) => {
-            updateRecipe({ imageUri: uri });
-          }}
-          scale={imageScale}
-        />
-        <ScrollView
-          style={{ height: "100%" }}
-          scrollEventThrottle={1}
-          onScroll={(e) => {
-            const scroll = e.nativeEvent.contentOffset.y;
-            setImageScale(Math.max(0, Math.min(1, 1 - scroll / 250)));
+      <ParallaxHeader
+        maxHeight={300}
+        minHeight={100}
+        heroImage={{ uri: recipe?.imageUri }}
+      >
+        <View style={{ paddingTop: 32, paddingBottom: 100 }}>
+          <Title style={{ fontSize: 32 }}>{recipe?.name}</Title>
+          {new Array(50).fill(0).map((_, idx) => {
+            return (
+              <Card key={idx} style={{ marginTop: 16 }}>
+                <Card.Content>{/* <Text>test</Text> */}</Card.Content>
+              </Card>
+            );
+          })}
+        </View>
+      </ParallaxHeader>
+      <SafeAreaView
+        style={{
+          position: "absolute",
+          width: "100%",
+          top: 0,
+          zIndex: 20,
+          flexDirection: "row",
+          alignItems: "flex-end",
+          justifyContent: "flex-end",
+          paddingHorizontal: 12,
+        }}
+      >
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={{
+            overflow: "hidden",
+            borderRadius: 20,
+            borderWidth: 1,
+            borderColor: "#333",
           }}
         >
-          <View
+          <BlurView
+            intensity={80}
             style={{
-              paddingHorizontal: 12,
-              paddingTop: 250,
-              paddingBottom: 50,
+              paddingHorizontal: 20,
+              paddingVertical: 8,
+              borderRadius: 20,
             }}
           >
-            {new Array(50).fill(0).map((_, idx) => (
-              <Card
-                key={idx}
-                style={{ backgroundColor: "rgba(0,0,0,0.3)", marginTop: 16 }}
-              >
-                <Card.Content>
-                  <Text>Step {idx}: do some shit</Text>
-                </Card.Content>
-              </Card>
-            ))}
-          </View>
-        </ScrollView>
-        <BackButton />
-      </Portal.Host>
+            <Text style={{ color: "#333" }}>edit</Text>
+          </BlurView>
+        </TouchableOpacity>
+      </SafeAreaView>
     </Screen>
   );
 };
