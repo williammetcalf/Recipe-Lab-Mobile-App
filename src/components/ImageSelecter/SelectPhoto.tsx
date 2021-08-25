@@ -22,9 +22,10 @@ const SelectPhoto: FC<SelectPhotoProps> = (props) => {
             allowsEditing: true,
             aspect: [4, 3],
           });
-          onImageSelected((imageResult as any).uri);
+          if (!imageResult.cancelled) {
+            onImageSelected(imageResult.uri);
+          }
         }
-        console.log(status);
       }
     })();
   }, []);

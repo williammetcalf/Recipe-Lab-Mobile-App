@@ -21,7 +21,9 @@ const TakePhoto: FC<TakePhotoProps> = (props) => {
             allowsEditing: true,
             aspect: [3, 4],
           });
-          onImageSelected((imageResult as any).uri);
+          if (!imageResult.cancelled) {
+            onImageSelected(imageResult.uri);
+          }
         }
       }
     })();

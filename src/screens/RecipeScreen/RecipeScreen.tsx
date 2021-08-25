@@ -1,11 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { FC } from "react";
+import { useCallback } from "react";
 import { View } from "react-native";
 import { Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RootStackParamList } from "../../App/App";
 import Screen from "../../components/Screen";
+import { Recipe } from "../../types/Recipe";
 import RecipeTitleCard from "./components/RecipeTitleCard";
 import useRecipe from "./useRecipe";
 
@@ -20,8 +22,15 @@ export interface RecipeScreenNavigationProps {
 const RecipeScreen: FC<RecipeScreenProps> = (props) => {
   const { route } = props;
   const { uid } = route.params;
-  const recipe = useRecipe(uid);
+  const [recipe, recipeRef] = useRecipe(uid);
+  const updateRecipe = useCallback(
+    (recipe: Partial<Recipe>) => {
+      recipeRef.update(recipe);
+    },
+    [recipeRef]
+  );
   const { canGoBack, goBack } = useNavigation();
+  console.log(recipe?.imageUri);
 
   return (
     <Screen>
@@ -40,7 +49,13 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
             </Button>
           </View>
         )}
-        <RecipeTitleCard recipeName={recipe?.name || ""} />
+        <RecipeTitleCard
+          recipeName={recipe?.name || ""}
+          imageUrl={recipe?.imageUri}
+          onImageChanged={(uri) => {
+            updateRecipe({ imageUri: uri });
+          }}
+        />
       </SafeAreaView>
     </Screen>
   );

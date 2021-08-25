@@ -5,19 +5,20 @@ import { Title } from "react-native-paper";
 import CameraSvg from "../../../assets/camera.svg";
 import ImageSelecter from "../../../components/ImageSelecter";
 import useSurfaceColor from "../../../hooks/useSurfaceColor";
+import BlankSvg from "../../../assets/blank.svg";
+import uploadLocalImage from "../../../utils/uploadLocalImage";
 
 export interface RecipeTitleCardProps {
   recipeName: string;
+  onImageChanged: (uri: string) => void;
+  imageUrl?: string;
 }
 
 const RecipeTitleCard: FC<RecipeTitleCardProps> = (props) => {
-  const { recipeName } = props;
+  const { recipeName, onImageChanged, imageUrl } = props;
   const surfaceColor = useSurfaceColor(0.8);
   const [showCaptureOverlay, setShowCaptureOverlay] = useState(false);
   const sheetRef = useRef<BottomSheetBase>(null);
-  const [image, setImage] = useState(
-    "https://honest-food.net/wp-content/uploads/2020/02/okra-gumbo-recipe.jpg"
-  );
 
   return (
     <>
@@ -31,18 +32,23 @@ const RecipeTitleCard: FC<RecipeTitleCardProps> = (props) => {
         }}
       >
         <View>
-          <Image
-            style={{ width: "100%", height: 200 }}
-            source={{
-              uri: image,
-            }}
-          />
+          {!imageUrl && (
+            <BlankSvg width="100%" height={250} preserveAspectRatio="none" />
+          )}
+          {imageUrl && (
+            <Image
+              style={{ width: "100%", height: 250, borderRadius: 20 }}
+              source={{ uri: imageUrl }}
+            />
+          )}
           <View
             style={{
               position: "absolute",
               bottom: 0,
               backgroundColor: surfaceColor,
               width: "100%",
+              borderBottomEndRadius: 20,
+              borderBottomStartRadius: 20,
             }}
           >
             <Title
@@ -77,8 +83,13 @@ const RecipeTitleCard: FC<RecipeTitleCardProps> = (props) => {
       </TouchableOpacity>
       <ImageSelecter
         ref={sheetRef}
-        onImageSelected={setImage}
-        onClose={() => sheetRef.current?.snapToIndex(-1)}
+        onImageSelected={async (uri) => {
+          const uploadResult = await uploadLocalImage(uri);
+          const newImageUri = await uploadResult.ref.getDownloadURL();
+          onImageChanged(newImageUri);
+          sheetRef.current?.close();
+        }}
+        onClose={() => sheetRef.current?.close()}
       />
     </>
   );

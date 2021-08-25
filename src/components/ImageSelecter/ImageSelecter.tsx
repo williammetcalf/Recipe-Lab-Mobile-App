@@ -2,6 +2,7 @@ import BottomSheetBase from "@gorhom/bottom-sheet";
 import React, { forwardRef } from "react";
 import { useState } from "react";
 import { View } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 import BottomSheet, { BottomSheetProps } from "../BottomSheet";
 import SelectPhoto from "./SelectPhoto";
@@ -23,12 +24,18 @@ const ImageSelecter = forwardRef<BottomSheetBase, ImageSelecterProps>(
         enablePanDownToClose
         onChange={() => setMode(null)}
         {...props}
-        snapPoints={["60%"]}
+        snapPoints={["25%"]}
         ref={ref}
       >
         <View style={{ height: 300 }}>
-          <Button onPress={() => setMode("camera")}>Take Photo</Button>
-          <Button onPress={() => setMode("library")}>
+          <Button
+            mode="outlined"
+            onPress={() => setMode("camera")}
+            style={{ marginVertical: 12 }}
+          >
+            Take Photo
+          </Button>
+          <Button mode="outlined" onPress={() => setMode("library")}>
             Select Photo From Library
           </Button>
         </View>

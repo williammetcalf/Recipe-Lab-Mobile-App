@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { Recipe } from "../../types/Recipe";
 import { mapFirebaseObject } from "../../types/mapFirebaseData";
 
-function useRecipe(recipeUid: string) {
+function useRecipe(
+  recipeUid: string
+): [Recipe | undefined, firebase.database.Reference] {
   const [recipe, setRecipe] = useState<Recipe>();
   const userUid = useCurrentUser().uid;
   const recipeRef = firebase
@@ -27,7 +29,7 @@ function useRecipe(recipeUid: string) {
     };
   }, [recipeUid, userUid]);
 
-  return recipe;
+  return [recipe, recipeRef];
 }
 
 export default useRecipe;
