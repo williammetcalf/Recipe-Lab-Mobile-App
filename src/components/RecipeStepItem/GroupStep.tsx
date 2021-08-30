@@ -1,5 +1,3 @@
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
-import * as Haptics from "expo-haptics";
 import React, { FC, Fragment } from "react";
 import { View } from "react-native";
 import { Divider } from "react-native-paper";
@@ -10,7 +8,7 @@ import {
   RecipeStepItem,
 } from "../../types/RecipeStepItem";
 import IngredientStep from "./IngredientStep";
-import NoteStep from "./NoteStep";
+import { NoteStep } from "./NoteStep";
 
 export interface GroupStepProps {
   step: RecipeStepGroup;

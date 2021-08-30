@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
-import { RecipeStepNote } from "../../types/RecipeStepItem";
+import { RecipeStepNote } from "../../../types/RecipeStepItem";
 import * as Haptics from "expo-haptics";
 
 export interface NoteStepProps {

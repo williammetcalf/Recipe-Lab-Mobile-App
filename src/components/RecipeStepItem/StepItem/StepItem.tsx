@@ -1,16 +1,16 @@
 import { BlurView } from "expo-blur";
 import React, { FC } from "react";
 import { Card } from "react-native-paper";
-import useSurfaceColor from "../../hooks/useSurfaceColor";
+import useSurfaceColor from "../../../hooks/useSurfaceColor";
 import {
   isGroup,
   isIngredient,
   isNote,
   RecipeStepItem,
-} from "../../types/RecipeStepItem";
-import GroupStep from "./GroupStep";
-import IngredientStep from "./IngredientStep";
-import NoteStep from "./NoteStep";
+} from "../../../types/RecipeStepItem";
+import GroupStep from "../GroupStep";
+import IngredientStep from "../IngredientStep";
+import { NoteStep } from "../NoteStep";
 
 export interface StepItemProps {
   step: RecipeStepItem;
