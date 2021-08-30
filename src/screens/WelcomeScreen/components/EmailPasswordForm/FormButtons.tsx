@@ -51,7 +51,7 @@ const FormButtons: FC<FormButtonsProps> = (props) => {
             } catch (err) {
               setShowSnackbar(true);
               setErrorMessage(err.message);
-              console.log(err);
+              console.error(err);
             } finally {
               setLoading(false);
             }

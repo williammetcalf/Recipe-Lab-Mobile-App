@@ -16,7 +16,7 @@ function useCreateRecipe() {
           const recipeRef = await ref.push({ name });
           resolve(recipeRef.key as string);
         } catch (err) {
-          console.log(err);
+          console.error(err);
           reject(err);
         } finally {
           setLoading(false);

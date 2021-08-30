@@ -20,7 +20,6 @@ function useRecipeList() {
     });
 
     return () => {
-      console.log("unsub");
       recipeListRef.off();
     };
   }, [uid]);

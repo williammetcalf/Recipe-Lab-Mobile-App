@@ -8,7 +8,7 @@ async function uploadLocalImage(uri: string) {
       resolve(xhr.response);
     };
     xhr.onerror = function (e) {
-      console.log(e);
+      console.error(e);
       reject(new TypeError("Network request failed"));
     };
     xhr.responseType = "blob";
