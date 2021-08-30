@@ -13,12 +13,26 @@ export interface RecipeStepNote extends RecipeStepItem {
 export interface RecipeStepIngredient extends RecipeStepItem {
   stepType: "ingredient";
   ingredientName: string;
-  quantity?: string;
+  quantity?: number;
   unit?: string;
   ingredientNote?: string;
 }
 
 export interface RecipeStepGroup extends RecipeStepItem {
   stepType: "group";
-  items: (RecipeStepNote | RecipeStepGroup)[];
+  items: (RecipeStepNote | RecipeStepIngredient)[];
+}
+
+export function isNote(step: RecipeStepItem): step is RecipeStepNote {
+  return step.stepType === "note";
+}
+
+export function isIngredient(
+  step: RecipeStepItem
+): step is RecipeStepIngredient {
+  return step.stepType === "ingredient";
+}
+
+export function isGroup(step: RecipeStepItem): step is RecipeStepGroup {
+  return step.stepType === "group";
 }

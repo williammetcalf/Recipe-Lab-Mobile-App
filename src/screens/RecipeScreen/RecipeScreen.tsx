@@ -1,20 +1,23 @@
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { BlurView } from "expo-blur";
 import React, { FC, useCallback } from "react";
-import { useState } from "react";
-import { Image } from "react-native";
-import { ScrollView, View } from "react-native";
-import { Button, Card, Portal, Text, Title } from "react-native-paper";
+import { useRef } from "react";
+import { View } from "react-native";
+import { Portal, Text, Title } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RootStackParamList } from "../../App/App";
-import ImageSelecter from "../../components/ImageSelecter";
+import BottomSheet from "../../components/BottomSheet";
 import ParallaxHeader from "../../components/ParallaxHeader";
+import StepItem from "../../components/RecipeStepItem/StepItem";
 import Screen from "../../components/Screen";
 import { Recipe } from "../../types/Recipe";
-import BackButton from "./components/BackButton";
-import RecipeTitleCard from "./components/RecipeTitleCard";
+import RecipeScreenHeader from "./components/RecipeScreenHeader";
+import data from "./mock-data";
 import useRecipe from "./useRecipe";
-import { BlurView } from "expo-blur";
+import BottomSheetNative from "@gorhom/bottom-sheet";
+import { useState } from "react";
+import { RecipeStepItem } from "../../types/RecipeStepItem";
 
 export type RecipeScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -28,6 +31,8 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
   const { route } = props;
   const { uid } = route.params;
   const [recipe, recipeRef] = useRecipe(uid);
+  const sheetRef = useRef<BottomSheetNative>(null);
+  const [editStep, setEditStep] = useState<RecipeStepItem | null>(null);
   const updateRecipe = useCallback(
     (recipe: Partial<Recipe>) => {
       recipeRef.update(recipe);
@@ -44,48 +49,35 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
       >
         <View style={{ paddingTop: 32, paddingBottom: 100 }}>
           <Title style={{ fontSize: 32 }}>{recipe?.name}</Title>
-          {new Array(50).fill(0).map((_, idx) => {
+          {data.map((step) => {
             return (
-              <Card key={idx} style={{ marginTop: 16 }}>
-                <Card.Content>{/* <Text>test</Text> */}</Card.Content>
-              </Card>
+              <StepItem
+                key={step._uid}
+                step={step}
+                onEdit={(step) => {
+                  setEditStep(step);
+                  sheetRef.current?.expand();
+                }}
+              />
             );
           })}
         </View>
       </ParallaxHeader>
-      <SafeAreaView
-        style={{
-          position: "absolute",
-          width: "100%",
-          top: 0,
-          zIndex: 20,
-          flexDirection: "row",
-          alignItems: "flex-end",
-          justifyContent: "flex-end",
-          paddingHorizontal: 12,
-        }}
-      >
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={{
-            overflow: "hidden",
-            borderRadius: 20,
-            borderWidth: 1,
-            borderColor: "#333",
-          }}
+      <RecipeScreenHeader />
+      <Portal>
+        <BottomSheet
+          title="Edit Step"
+          onClose={() => sheetRef.current?.close()}
+          snapPoints={["10%", "50%"]}
+          ref={sheetRef}
+          style={{ zIndex: 1000 }}
+          enablePanDownToClose
         >
-          <BlurView
-            intensity={80}
-            style={{
-              paddingHorizontal: 20,
-              paddingVertical: 8,
-              borderRadius: 20,
-            }}
-          >
-            <Text style={{ color: "#333" }}>edit</Text>
-          </BlurView>
-        </TouchableOpacity>
-      </SafeAreaView>
+          <View>
+            <Text>{JSON.stringify(editStep)}</Text>
+          </View>
+        </BottomSheet>
+      </Portal>
     </Screen>
   );
 };
