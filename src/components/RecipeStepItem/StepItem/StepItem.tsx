@@ -9,7 +9,7 @@ import {
   RecipeStepItem,
 } from "../../../types/RecipeStepItem";
 import GroupStep from "../GroupStep";
-import IngredientStep from "../IngredientStep";
+import { IngredientStep } from "../IngredientStep";
 import { NoteStep } from "../NoteStep";
 
 export interface StepItemProps {

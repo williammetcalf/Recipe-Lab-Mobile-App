@@ -2,7 +2,7 @@ import { isNumber } from "lodash";
 import React, { FC } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
-import { RecipeStepIngredient } from "../../types/RecipeStepItem";
+import { RecipeStepIngredient } from "../../../types/RecipeStepItem";
 import * as Haptics from "expo-haptics";
 
 export interface IngredientStepProps {

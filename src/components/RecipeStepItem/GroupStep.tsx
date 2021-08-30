@@ -7,7 +7,7 @@ import {
   RecipeStepGroup,
   RecipeStepItem,
 } from "../../types/RecipeStepItem";
-import IngredientStep from "./IngredientStep";
+import { IngredientStep } from "./IngredientStep";
 import { NoteStep } from "./NoteStep";
 
 export interface GroupStepProps {

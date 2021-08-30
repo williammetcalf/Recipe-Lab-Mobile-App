@@ -12,6 +12,12 @@ export interface NoteStepEditProps {
   onSave: (step: RecipeStepNote) => void;
 }
 
+export const editNoteSnapPoints: [string, string, string] = [
+  "10%",
+  "20%",
+  "50%",
+];
+
 const defaultNewStep: RecipeStepNote = {
   stepType: "note",
   noteText: "",
