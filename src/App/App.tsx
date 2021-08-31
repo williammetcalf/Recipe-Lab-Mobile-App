@@ -12,6 +12,7 @@ import { HomeScreenProps } from "../screens/HomeScreen/HomeScreen";
 import RecipeScreen, {
   RecipeScreenNavigationProps,
 } from "../screens/RecipeScreen/RecipeScreen";
+import SandboxScreen from "../screens/SandboxScreen/SandboxScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import useWaitForInitialAuthState from "./hooks/useWaitForInitialAuthState";
 
@@ -56,7 +57,7 @@ export default function App() {
                 />
                 <Stack.Screen
                   name="Recipe"
-                  component={RecipeScreen}
+                  component={SandboxScreen}
                   options={{ headerShown: false }}
                 />
               </Stack.Navigator>
