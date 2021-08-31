@@ -25,6 +25,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "~0.63.4",
+    "react-native-drax": "^0.8.1",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-paper": "^4.9.2",
     "react-native-parallax-scrollview": "^3.0.0",

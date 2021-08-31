@@ -5,14 +5,12 @@ import "react-native-gesture-handler";
 import { DarkTheme, Provider as PaperProvider } from "react-native-paper";
 import { CurrentUserContext } from "../components/CurrentUserContext";
 import { GlobalLoadingContext } from "../components/GlobalLoading";
-import Screen from "../components/Screen";
 import useAuthState from "../hooks/useAuthState";
 import HomeScreen from "../screens/HomeScreen";
 import { HomeScreenProps } from "../screens/HomeScreen/HomeScreen";
 import RecipeScreen, {
   RecipeScreenNavigationProps,
 } from "../screens/RecipeScreen/RecipeScreen";
-import SandboxScreen from "../screens/SandboxScreen/SandboxScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import useWaitForInitialAuthState from "./hooks/useWaitForInitialAuthState";
 
@@ -57,7 +55,7 @@ export default function App() {
                 />
                 <Stack.Screen
                   name="Recipe"
-                  component={SandboxScreen}
+                  component={RecipeScreen}
                   options={{ headerShown: false }}
                 />
               </Stack.Navigator>

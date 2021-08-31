@@ -3,10 +3,13 @@ import React, { FC } from "react";
 import { SafeAreaView, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 
-export interface RecipeScreenHeaderProps {}
+export interface RecipeScreenHeaderProps {
+  isEditMode: boolean;
+  onEditModeChange: (isEditMode: boolean) => void;
+}
 
 const RecipeScreenHeader: FC<RecipeScreenHeaderProps> = (props) => {
-  const {} = props;
+  const { isEditMode, onEditModeChange } = props;
 
   return (
     <SafeAreaView
@@ -22,6 +25,7 @@ const RecipeScreenHeader: FC<RecipeScreenHeaderProps> = (props) => {
       }}
     >
       <TouchableOpacity
+        onPress={() => onEditModeChange(!isEditMode)}
         activeOpacity={0.7}
         style={{
           overflow: "hidden",
@@ -38,7 +42,7 @@ const RecipeScreenHeader: FC<RecipeScreenHeaderProps> = (props) => {
             borderRadius: 20,
           }}
         >
-          <Text style={{ color: "#333" }}>edit</Text>
+          <Text style={{ color: "#333" }}>{isEditMode ? "done" : "edit"}</Text>
         </BlurView>
       </TouchableOpacity>
     </SafeAreaView>

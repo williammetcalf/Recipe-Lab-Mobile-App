@@ -1,38 +1,26 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { ListRenderItem, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import { IconButton } from "react-native-paper";
-import Animated, {
-  Easing,
-  useAnimatedScrollHandler,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { DraxList, DraxProvider } from "react-native-drax";
+import { Easing, useSharedValue, withTiming } from "react-native-reanimated";
 import ItemWrapper from "./ItemWrapper";
 import ParallaxHeader, { ParallaxHeaderProps } from "./ParallaxHeader";
 
 export interface ReorderableParallaxListProps<T>
   extends Omit<ParallaxHeaderProps, "scrollOffset"> {
   data: T[];
+  onReorder: (newData: T[]) => void;
   keyExtractor: (item: T) => string;
   renderItem: ListRenderItem<T>;
   reordering?: boolean;
 }
 
-const ReanimatedFlatList = Animated.createAnimatedComponent(FlatList);
-
 function ReorderableParallaxList<T>(props: ReorderableParallaxListProps<T>) {
   const { data, keyExtractor, renderItem, HeaderComponent } = props;
   const { headerImageSource, headerMinHeight, headerMaxHeight } = props;
-  const { reordering } = props;
+  const { reordering, onReorder } = props;
 
   const reorderAnim = useSharedValue(0);
   const scrollOffset = useSharedValue(0);
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (e) => {
-      scrollOffset.value = e.contentOffset.y;
-    },
-  });
 
   useEffect(() => {
     if (reordering) {
@@ -57,21 +45,34 @@ function ReorderableParallaxList<T>(props: ReorderableParallaxListProps<T>) {
         HeaderComponent={HeaderComponent}
         headerImageSource={headerImageSource}
       />
-      <ReanimatedFlatList
-        data={data}
-        keyExtractor={keyExtractor}
-        style={{ height: "100%", paddingTop: headerMaxHeight }}
-        scrollEventThrottle={10}
-        ListFooterComponent={() => <View style={{ height: headerMaxHeight }} />}
-        onScroll={scrollHandler}
-        renderItem={(item) => {
-          return (
-            <ItemWrapper reorderAnim={reorderAnim}>
-              {renderItem(item)}
-            </ItemWrapper>
-          );
-        }}
-      />
+      <DraxProvider>
+        <DraxList
+          scrollEventThrottle={10}
+          onScroll={(e) => {
+            scrollOffset.value = e.nativeEvent.contentOffset.y;
+          }}
+          reorderable={reordering}
+          itemsDraggable={reordering}
+          data={data}
+          onItemReorder={({ fromIndex, toIndex }) => {
+            const newData = data.slice();
+            newData.splice(toIndex, 0, newData.splice(fromIndex, 1)[0]);
+            onReorder(newData);
+          }}
+          flatListStyle={{ height: "100%", paddingTop: headerMaxHeight }}
+          ListFooterComponent={() => (
+            <View style={{ height: headerMaxHeight }} />
+          )}
+          keyExtractor={keyExtractor}
+          renderItemContent={(item) => {
+            return (
+              <ItemWrapper reorderAnim={reorderAnim}>
+                {renderItem(item)}
+              </ItemWrapper>
+            );
+          }}
+        />
+      </DraxProvider>
     </>
   );
 }
