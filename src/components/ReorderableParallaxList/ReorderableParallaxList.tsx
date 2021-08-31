@@ -1,128 +1,74 @@
-import React, { ComponentType, useEffect, useMemo, useRef } from "react";
-import {
-  Animated,
-  Easing,
-  ImageURISource,
-  ListRenderItem,
-  View,
-} from "react-native";
+import React, { useEffect, useRef } from "react";
+import { ListRenderItem, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { IconButton } from "react-native-paper";
+import Animated, {
+  Easing,
+  useAnimatedScrollHandler,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import ItemWrapper from "./ItemWrapper";
+import ParallaxHeader, { ParallaxHeaderProps } from "./ParallaxHeader";
 
-export interface ReorderableParallaxListProps<T> {
-  data: Animated.WithAnimatedValue<T>[];
+export interface ReorderableParallaxListProps<T>
+  extends Omit<ParallaxHeaderProps, "scrollOffset"> {
+  data: T[];
   keyExtractor: (item: T) => string;
   renderItem: ListRenderItem<T>;
-  HeaderComponent?: ComponentType<{}>;
-  headerImageSource?: ImageURISource;
-  headerMinHeight: number;
-  headerMaxHeight: number;
   reordering?: boolean;
 }
+
+const ReanimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 function ReorderableParallaxList<T>(props: ReorderableParallaxListProps<T>) {
   const { data, keyExtractor, renderItem, HeaderComponent } = props;
   const { headerImageSource, headerMinHeight, headerMaxHeight } = props;
   const { reordering } = props;
-  const parallaxAnim = useRef(new Animated.Value(0)).current;
-  const reorderAnim = useRef(new Animated.Value(0)).current;
-  const HEADER_FLOOR = useMemo(
-    () => headerMaxHeight - headerMinHeight,
-    [headerMaxHeight, headerMinHeight]
-  );
+
+  const reorderAnim = useSharedValue(0);
+  const scrollOffset = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (e) => {
+      scrollOffset.value = e.contentOffset.y;
+    },
+  });
 
   useEffect(() => {
     if (reordering) {
-      Animated.timing(reorderAnim, {
-        toValue: 1,
-        duration: 200,
+      reorderAnim.value = withTiming(1, {
+        duration: 150,
         easing: Easing.in(Easing.linear),
-        useNativeDriver: true,
-      }).start();
+      });
     } else {
-      Animated.timing(reorderAnim, {
-        toValue: 0,
-        duration: 200,
+      reorderAnim.value = withTiming(0, {
+        duration: 150,
         easing: Easing.in(Easing.linear),
-        useNativeDriver: true,
-      }).start();
+      });
     }
   }, [reordering]);
 
   return (
     <>
-      <Animated.View
-        style={{
-          position: "absolute",
-          top: 0,
-          width: "100%",
-          height: headerMaxHeight,
-          opacity: parallaxAnim.interpolate({
-            inputRange: [0, headerMaxHeight, headerMaxHeight + 1],
-            outputRange: [1, 0.4, 0.4],
-          }),
-          transform: [
-            {
-              translateY: parallaxAnim.interpolate({
-                inputRange: [-1, 0, headerMaxHeight, headerMaxHeight + 1],
-                outputRange: [0, 0, -HEADER_FLOOR, -HEADER_FLOOR],
-              }),
-            },
-          ],
-        }}
-      >
-        {headerImageSource && (
-          <Animated.Image
-            source={headerImageSource}
-            style={{ width: "100%", height: headerMaxHeight }}
-          />
-        )}
-        {HeaderComponent && (
-          <View style={{ position: "absolute", height: "100%", width: "100%" }}>
-            <HeaderComponent />
-          </View>
-        )}
-      </Animated.View>
-      <Animated.FlatList
+      <ParallaxHeader
+        headerMaxHeight={headerMaxHeight}
+        headerMinHeight={headerMinHeight}
+        scrollOffset={scrollOffset}
+        HeaderComponent={HeaderComponent}
+        headerImageSource={headerImageSource}
+      />
+      <ReanimatedFlatList
         data={data}
         keyExtractor={keyExtractor}
         style={{ height: "100%", paddingTop: headerMaxHeight }}
         scrollEventThrottle={10}
         ListFooterComponent={() => <View style={{ height: headerMaxHeight }} />}
-        onScroll={Animated.event(
-          [
-            {
-              nativeEvent: {
-                contentOffset: { y: parallaxAnim },
-              },
-            },
-          ],
-          {
-            useNativeDriver: true,
-          }
-        )}
+        onScroll={scrollHandler}
         renderItem={(item) => {
           return (
-            <>
-              <Animated.View
-                style={{ opacity: reorderAnim, position: "absolute" }}
-              >
-                <IconButton icon="menu" />
-              </Animated.View>
-              <Animated.View
-                style={{
-                  transform: [
-                    {
-                      translateX: reorderAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, 50],
-                      }),
-                    },
-                  ],
-                }}
-              >
-                {renderItem(item)}
-              </Animated.View>
-            </>
+            <ItemWrapper reorderAnim={reorderAnim}>
+              {renderItem(item)}
+            </ItemWrapper>
           );
         }}
       />
