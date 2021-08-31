@@ -1,7 +1,8 @@
+import { TouchableHighlight } from "@gorhom/bottom-sheet";
 import { BlurView } from "expo-blur";
 import React, { FC } from "react";
-import { SafeAreaView, TouchableOpacity } from "react-native";
-import { Text } from "react-native-paper";
+import { SafeAreaView, View } from "react-native";
+import { Button, IconButton } from "react-native-paper";
 
 export interface RecipeScreenHeaderProps {
   isEditMode: boolean;
@@ -17,34 +18,28 @@ const RecipeScreenHeader: FC<RecipeScreenHeaderProps> = (props) => {
         position: "absolute",
         width: "100%",
         top: 0,
+        right: 10,
         zIndex: 20,
         flexDirection: "row",
         alignItems: "flex-end",
         justifyContent: "flex-end",
-        paddingHorizontal: 12,
       }}
     >
-      <TouchableOpacity
+      <TouchableHighlight
+        underlayColor="rgba(0,0,0,0.8)"
         onPress={() => onEditModeChange(!isEditMode)}
-        activeOpacity={0.7}
         style={{
+          borderRadius: 50,
           overflow: "hidden",
-          borderRadius: 20,
-          borderWidth: 1,
-          borderColor: "#333",
         }}
       >
-        <BlurView
-          intensity={80}
-          style={{
-            paddingHorizontal: 20,
-            paddingVertical: 8,
-            borderRadius: 20,
-          }}
-        >
-          <Text style={{ color: "#333" }}>{isEditMode ? "done" : "edit"}</Text>
+        <BlurView intensity={100}>
+          <IconButton
+            icon={isEditMode ? "close" : "reorder-horizontal"}
+            color="white"
+          />
         </BlurView>
-      </TouchableOpacity>
+      </TouchableHighlight>
     </SafeAreaView>
   );
 };

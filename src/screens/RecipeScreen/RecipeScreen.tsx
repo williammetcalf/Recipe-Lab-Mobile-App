@@ -1,9 +1,7 @@
-import BottomSheetNative from "@gorhom/bottom-sheet";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { BlurView } from "expo-blur";
-import React, { FC, useCallback, useRef, useState } from "react";
-import { SafeAreaView, View } from "react-native";
-import { Button, Title } from "react-native-paper";
+import React, { FC, useCallback, useState } from "react";
+import { View } from "react-native";
+import { Title } from "react-native-paper";
 import { RootStackParamList } from "../../App/App";
 import { StepItem } from "../../components/RecipeStepItem/StepItem";
 import ReorderableParallaxList from "../../components/ReorderableParallaxList";
@@ -27,7 +25,6 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
   const { route } = props;
   const { uid } = route.params;
   const [recipe, recipeRef] = useRecipe(uid);
-  const sheetRef = useRef<BottomSheetNative>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editStep, setEditStep] = useState<RecipeStepItem | null>(null);
   const [steps, setSteps] = useState(data);
@@ -55,30 +52,13 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
           </View>
         )}
         renderItem={(item) => (
-          <StepItem step={item.item} onEdit={setEditStep} />
+          <StepItem
+            step={item.item}
+            onEdit={isEditMode ? undefined : setEditStep}
+          />
         )}
         reordering={isEditMode}
       />
-      {/* <SafeAreaView
-        style={{
-          position: "absolute",
-          right: 10,
-          flexDirection: "row-reverse",
-        }}
-      >
-        <BlurView intensity={90}>
-          <Button
-            color="white"
-            mode="contained"
-            onPress={() => {
-              setIsEditMode(!isEditMode);
-            }}
-            style={{ backgroundColor: "rgba(255,255,255,0.5)" }}
-          >
-            {isEditMode ? "Cancel" : "Edit"}
-          </Button>
-        </BlurView>
-      </SafeAreaView> */}
       <RecipeScreenHeader
         isEditMode={isEditMode}
         onEditModeChange={setIsEditMode}

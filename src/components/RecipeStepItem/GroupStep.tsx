@@ -12,7 +12,7 @@ import { NoteStep } from "./NoteStep";
 
 export interface GroupStepProps {
   step: RecipeStepGroup;
-  onEdit: (step: RecipeStepItem) => void;
+  onEdit?: (step: RecipeStepItem) => void;
 }
 
 const GroupStep: FC<GroupStepProps> = (props) => {

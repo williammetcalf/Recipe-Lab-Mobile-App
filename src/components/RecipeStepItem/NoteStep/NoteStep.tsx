@@ -6,24 +6,28 @@ import * as Haptics from "expo-haptics";
 
 export interface NoteStepProps {
   step: RecipeStepNote;
-  onEdit: (step: RecipeStepNote) => void;
+  onEdit?: (step: RecipeStepNote) => void;
 }
 
 const NoteStep: FC<NoteStepProps> = (props) => {
   const { step, onEdit } = props;
 
-  return (
-    <TouchableOpacity
-      onLongPress={() => {
-        Haptics.impactAsync();
-        onEdit(step);
-      }}
-      delayPressIn={100}
-      style={{ paddingVertical: 4 }}
-    >
-      <Text>{step.noteText}</Text>
-    </TouchableOpacity>
-  );
+  if (onEdit) {
+    return (
+      <TouchableOpacity
+        onLongPress={() => {
+          Haptics.impactAsync();
+          onEdit(step);
+        }}
+        hitSlop={{ bottom: 4, top: 4 }}
+        delayPressIn={100}
+      >
+        <Text>{step.noteText}</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  return <Text>{step.noteText}</Text>;
 };
 
 export default NoteStep;

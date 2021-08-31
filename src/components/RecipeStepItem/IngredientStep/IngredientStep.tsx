@@ -7,7 +7,7 @@ import * as Haptics from "expo-haptics";
 
 export interface IngredientStepProps {
   step: RecipeStepIngredient;
-  onEdit: (step: RecipeStepIngredient) => void;
+  onEdit?: (step: RecipeStepIngredient) => void;
 }
 
 const IngredientStep: FC<IngredientStepProps> = (props) => {
@@ -17,10 +17,10 @@ const IngredientStep: FC<IngredientStepProps> = (props) => {
     <TouchableOpacity
       onLongPress={() => {
         Haptics.impactAsync();
-        onEdit(step);
+        onEdit && onEdit(step);
       }}
       delayPressIn={100}
-      style={{ paddingVertical: 4 }}
+      hitSlop={{ bottom: 4, top: 4 }}
     >
       <View>
         <View style={{ flexDirection: "row" }}>

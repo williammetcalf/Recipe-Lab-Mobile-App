@@ -14,7 +14,7 @@ import { NoteStep } from "../NoteStep";
 
 export interface StepItemProps {
   step: RecipeStepItem;
-  onEdit: (step: RecipeStepItem) => void;
+  onEdit?: (step: RecipeStepItem) => void;
 }
 
 const StepItem: FC<StepItemProps> = (props) => {
