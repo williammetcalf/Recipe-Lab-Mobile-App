@@ -13,8 +13,9 @@ const ItemWrapper: FC<ItemWrapperProps> = (props) => {
   const { children, reorderAnim } = props;
   const slideAnim = useAnimatedStyle(() => {
     return {
+      paddingLeft: interpolate(reorderAnim.value, [0, 1], [0, 20]),
       transform: [
-        { translateX: interpolate(reorderAnim.value, [0, 1], [0, 50]) },
+        { translateX: interpolate(reorderAnim.value, [0, 1], [0, 30]) },
       ],
     };
   });
@@ -28,7 +29,7 @@ const ItemWrapper: FC<ItemWrapperProps> = (props) => {
   return (
     <>
       <Animated.View style={[fadeAnim, { position: "absolute" }]}>
-        <IconButton icon="menu" />
+        <IconButton icon="reorder-horizontal" />
       </Animated.View>
       <Animated.View style={slideAnim}>{children}</Animated.View>
     </>

@@ -59,9 +59,9 @@ function ReorderableParallaxList<T>(props: ReorderableParallaxListProps<T>) {
             newData.splice(toIndex, 0, newData.splice(fromIndex, 1)[0]);
             onReorder(newData);
           }}
-          flatListStyle={{ height: "100%", paddingTop: headerMaxHeight }}
+          flatListStyle={{ height: "100%", paddingTop: headerMaxHeight + 12 }}
           ListFooterComponent={() => (
-            <View style={{ height: headerMaxHeight }} />
+            <View style={{ height: headerMaxHeight + 12 }} />
           )}
           keyExtractor={keyExtractor}
           renderItemContent={(item) => {

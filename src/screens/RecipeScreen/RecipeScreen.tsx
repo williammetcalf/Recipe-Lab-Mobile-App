@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { BlurView } from "expo-blur";
 import React, { FC, useCallback, useState } from "react";
 import { View } from "react-native";
 import { Title } from "react-native-paper";
@@ -8,7 +9,9 @@ import ReorderableParallaxList from "../../components/ReorderableParallaxList";
 import Screen from "../../components/Screen";
 import { Recipe } from "../../types/Recipe";
 import { RecipeStepItem } from "../../types/RecipeStepItem";
+import AddStepButton from "./components/AddStepButton";
 import EditSheet from "./components/EditSheet";
+import ParallaxHeader from "./components/ParallaxHeader";
 import RecipeScreenHeader from "./components/RecipeScreenHeader";
 import data from "./mock-data";
 import useRecipe from "./useRecipe";
@@ -46,11 +49,7 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
         headerImageSource={{
           uri: "https://firebasestorage.googleapis.com/v0/b/recipe-lab-96d4d.appspot.com/o/28e88ab4-1e2d-416e-bc13-3476d3fc690a?alt=media&token=f71a8b70-05df-45e7-bc7a-01ffbfbaf502",
         }}
-        HeaderComponent={() => (
-          <View style={{ position: "absolute", bottom: 0 }}>
-            <Title style={{ color: "red" }}>Test</Title>
-          </View>
-        )}
+        HeaderComponent={() => <ParallaxHeader recipeName={recipe?.name} />}
         renderItem={(item) => (
           <StepItem
             step={item.item}
@@ -63,14 +62,11 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
         isEditMode={isEditMode}
         onEditModeChange={setIsEditMode}
       />
+      <AddStepButton />
       <EditSheet
         step={editStep}
-        onSave={() => {
-          setEditStep(null);
-        }}
-        onCancel={() => {
-          setEditStep(null);
-        }}
+        onSave={() => setEditStep(null)}
+        onCancel={() => setEditStep(null)}
       />
     </Screen>
   );

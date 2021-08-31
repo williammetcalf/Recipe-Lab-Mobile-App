@@ -61,7 +61,17 @@ const EditSheet: FC<EditSheetProps> = (props) => {
           idx === -1 && onCancel();
         }}
       >
-        <View>{step && <StepItemEdit step={step} onSave={onSave} />}</View>
+        <View>
+          {step && (
+            <StepItemEdit
+              step={step}
+              onSave={(updatedStep) => {
+                setForceClose(true);
+                onSave(updatedStep);
+              }}
+            />
+          )}
+        </View>
       </BottomSheet>
     </Portal>
   );
