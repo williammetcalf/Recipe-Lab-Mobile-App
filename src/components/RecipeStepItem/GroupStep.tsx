@@ -14,7 +14,7 @@ import { NoteStep } from "./NoteStep";
 
 export interface GroupStepProps {
   step: RecipeStepGroup;
-  onEdit?: (step: RecipeStepItem) => void;
+  onEdit?: (step: { step: RecipeStepItem; _parentUid?: string }) => void;
   reordering?: boolean;
 }
 
@@ -28,7 +28,7 @@ const GroupStep: FC<GroupStepProps> = (props) => {
         const onLongPress = onEdit
           ? () => {
               Haptics.impactAsync();
-              onEdit(innerStep);
+              onEdit({ step: innerStep, _parentUid: step._uid });
             }
           : undefined;
         return (

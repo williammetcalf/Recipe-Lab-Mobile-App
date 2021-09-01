@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { ComponentType, useEffect } from "react";
 import { ListRenderItem, StyleProp, View, ViewStyle } from "react-native";
 import { DraxList, DraxProvider, DraxView } from "react-native-drax";
+import { Title } from "react-native-paper";
 import { Easing, useSharedValue, withTiming } from "react-native-reanimated";
 import ItemWrapper from "./ItemWrapper";
 import ParallaxHeader, { ParallaxHeaderProps } from "./ParallaxHeader";
@@ -13,12 +14,14 @@ export interface ReorderableParallaxListProps<T>
   renderItem: ListRenderItem<T>;
   reordering?: boolean;
   contentStyle?: StyleProp<ViewStyle>;
+  ListEmptyComponent?: ComponentType<{}>;
 }
 
 function ReorderableParallaxList<T>(props: ReorderableParallaxListProps<T>) {
   const { data, keyExtractor, renderItem, HeaderComponent } = props;
   const { headerImageSource, headerMinHeight, headerMaxHeight } = props;
   const { reordering, onReorder, contentStyle } = props;
+  const { ListEmptyComponent } = props;
 
   const reorderAnim = useSharedValue(0);
   const scrollOffset = useSharedValue(0);
@@ -67,6 +70,7 @@ function ReorderableParallaxList<T>(props: ReorderableParallaxListProps<T>) {
           ListFooterComponent={() => (
             <View style={{ height: headerMaxHeight + 12 }} />
           )}
+          ListEmptyComponent={ListEmptyComponent}
           keyExtractor={keyExtractor}
           renderItemContent={(item) => {
             return (

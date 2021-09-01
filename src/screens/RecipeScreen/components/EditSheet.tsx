@@ -8,8 +8,11 @@ import { getSnapPoints } from "../../../components/RecipeStepItem/StepItem/StepI
 import { RecipeStepItem } from "../../../types/RecipeStepItem";
 
 export interface EditSheetProps {
-  step: RecipeStepItem | null;
-  onSave: (updatedStep: RecipeStepItem) => void;
+  step: {
+    step: RecipeStepItem;
+    _parentUid?: string;
+  } | null;
+  onSave: (updatedStep: RecipeStepItem, _parentUid?: string) => void;
   onCancel: () => void;
 }
 
@@ -39,8 +42,10 @@ const EditSheet: FC<EditSheetProps> = (props) => {
 
   useEffect(() => {
     if (step) {
-      const startingSnapPont = step.stepType === "note" ? 2 : 1;
-      sheetRef.current?.snapToPosition(getSnapPoints(step)[startingSnapPont]);
+      const startingSnapPont = step.step.stepType === "note" ? 2 : 1;
+      sheetRef.current?.snapToPosition(
+        getSnapPoints(step.step)[startingSnapPont]
+      );
     } else {
       closeSheet();
     }
@@ -54,7 +59,7 @@ const EditSheet: FC<EditSheetProps> = (props) => {
           setForceClose(true);
           closeSheet();
         }}
-        snapPoints={getSnapPoints(step)}
+        snapPoints={getSnapPoints(step?.step || null)}
         ref={sheetRef}
         onChange={(idx) => {
           idx >= 0 && setForceClose(false);
@@ -64,10 +69,10 @@ const EditSheet: FC<EditSheetProps> = (props) => {
         <View>
           {step && (
             <StepItemEdit
-              step={step}
+              step={step.step}
               onSave={(updatedStep) => {
                 setForceClose(true);
-                onSave(updatedStep);
+                onSave(updatedStep, step._parentUid);
               }}
             />
           )}

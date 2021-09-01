@@ -41,7 +41,13 @@ const IngredientStepEdit: FC<IngredientStepEditProps> = (props) => {
         label="Ingredient Name"
       />
 
-      <Button onPress={() => onSave(editedStep)}>save</Button>
+      <Button
+        onPress={() => {
+          onSave(editedStep);
+        }}
+      >
+        save
+      </Button>
     </View>
   );
 };

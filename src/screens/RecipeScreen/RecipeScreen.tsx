@@ -1,19 +1,19 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { BlurView } from "expo-blur";
-import React, { FC, useCallback, useState } from "react";
-import { View } from "react-native";
-import { Title } from "react-native-paper";
+import React, { FC, useState } from "react";
 import { RootStackParamList } from "../../App/App";
+import EmptyState from "../../components/EmptyState";
 import { StepItem } from "../../components/RecipeStepItem/StepItem";
 import ReorderableParallaxList from "../../components/ReorderableParallaxList";
 import Screen from "../../components/Screen";
-import { Recipe } from "../../types/Recipe";
+import {
+  mapDataToFirebaseObject,
+  mapListToFirebaseData,
+} from "../../types/mapFirebaseData";
 import { RecipeStepItem } from "../../types/RecipeStepItem";
 import AddStepButton from "./components/AddStepButton";
 import EditSheet from "./components/EditSheet";
 import ParallaxHeader from "./components/ParallaxHeader";
 import RecipeScreenHeader from "./components/RecipeScreenHeader";
-import data from "./mock-data";
 import useRecipe from "./useRecipe";
 
 export type RecipeScreenProps = NativeStackScreenProps<
@@ -29,20 +29,24 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
   const { uid } = route.params;
   const [recipe, recipeRef] = useRecipe(uid);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editStep, setEditStep] = useState<RecipeStepItem | null>(null);
-  const [steps, setSteps] = useState(data);
-  const updateRecipe = useCallback(
-    (recipe: Partial<Recipe>) => {
-      recipeRef.update(recipe);
-    },
-    [recipeRef]
-  );
+  const [editStep, setEditStep] = useState<{
+    step: RecipeStepItem;
+    _parentUid?: string;
+  } | null>(null);
 
   return (
     <Screen>
       <ReorderableParallaxList
-        data={steps}
-        onReorder={setSteps}
+        data={recipe?.steps || []}
+        onReorder={(data) => {
+          recipeRef
+            .child("steps")
+            .update(
+              mapListToFirebaseData(
+                data.map((step, idx) => ({ ...step, order: idx }))
+              )
+            );
+        }}
         keyExtractor={(item) => `${item._uid}`}
         headerMinHeight={150}
         headerMaxHeight={300}
@@ -59,15 +63,36 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
           />
         )}
         reordering={isEditMode}
+        ListEmptyComponent={() => (
+          <EmptyState>Press "+" to add steps</EmptyState>
+        )}
       />
       <RecipeScreenHeader
         isEditMode={isEditMode}
         onEditModeChange={setIsEditMode}
       />
-      <AddStepButton />
+      <AddStepButton
+        onAddStep={(stepType: RecipeStepItem["stepType"]) =>
+          setEditStep({ step: { stepType } as RecipeStepItem })
+        }
+      />
       <EditSheet
         step={editStep}
-        onSave={() => setEditStep(null)}
+        onSave={(updatedStep, _parentUid) => {
+          console.log(updatedStep, _parentUid);
+          const { _uid } = updatedStep;
+          if (!_uid) {
+            recipeRef
+              .child("steps")
+              .push({ ...updatedStep, order: recipe?.steps.length || 0 });
+          } else {
+            recipeRef
+              .child("steps")
+              .child(updatedStep._uid)
+              .update(mapDataToFirebaseObject(updatedStep));
+          }
+          setEditStep(null);
+        }}
         onCancel={() => setEditStep(null)}
       />
     </Screen>

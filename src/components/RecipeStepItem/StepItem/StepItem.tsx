@@ -12,7 +12,7 @@ import StepContainer from "../StepContainer";
 
 export interface StepItemProps {
   step: RecipeStepItem;
-  onEdit?: (step: RecipeStepItem) => void;
+  onEdit?: (step: { step: RecipeStepItem; _parentUid?: string }) => void;
   reordering?: boolean;
 }
 
@@ -21,19 +21,19 @@ const StepItem: FC<StepItemProps> = (props) => {
 
   if (isNote(step)) {
     return (
-      <StepContainer onEdit={onEdit ? () => onEdit(step) : undefined}>
+      <StepContainer onEdit={onEdit ? () => onEdit({ step }) : undefined}>
         <NoteStep step={step} />
       </StepContainer>
     );
   } else if (isIngredient(step)) {
     return (
-      <StepContainer onEdit={onEdit ? () => onEdit(step) : undefined}>
+      <StepContainer onEdit={onEdit ? () => onEdit({ step }) : undefined}>
         <IngredientStep step={step} />
       </StepContainer>
     );
   } else if (isGroup(step)) {
     return (
-      <StepContainer onEdit={onEdit ? () => onEdit(step) : undefined}>
+      <StepContainer onEdit={onEdit ? () => onEdit({ step }) : undefined}>
         <GroupStep step={step} onEdit={onEdit} reordering={reordering} />
       </StepContainer>
     );

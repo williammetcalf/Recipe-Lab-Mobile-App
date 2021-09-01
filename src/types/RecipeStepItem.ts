@@ -2,6 +2,7 @@ import { FirebaseObject } from "./FirebaseObject";
 
 export interface RecipeStepItem extends FirebaseObject {
   stepType: "note" | "ingredient" | "group";
+  order: number;
 }
 
 export interface RecipeStepNote extends RecipeStepItem {

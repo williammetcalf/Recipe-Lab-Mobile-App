@@ -2,7 +2,11 @@ import { useCurrentUser } from "../../components/CurrentUserContext";
 import firebase from "firebase";
 import { useEffect, useState } from "react";
 import { Recipe } from "../../types/Recipe";
-import { mapFirebaseObject } from "../../types/mapFirebaseData";
+import {
+  mapFirebaseList,
+  mapFirebaseObject,
+} from "../../types/mapFirebaseData";
+import { RecipeStepItem } from "../../types/RecipeStepItem";
 
 function useRecipe(
   recipeUid: string
@@ -18,7 +22,14 @@ function useRecipe(
   useEffect(() => {
     recipeRef.on("value", (snap) => {
       if (snap.exists()) {
-        setRecipe(mapFirebaseObject<Recipe>(snap.val(), snap.key as string));
+        const recipe = mapFirebaseObject<Recipe>(
+          snap.val(),
+          snap.key as string
+        );
+        recipe.steps = mapFirebaseList<RecipeStepItem>(
+          recipe.steps as any
+        ).sort((a, b) => a.order - b.order);
+        setRecipe(recipe);
       } else {
         setRecipe(undefined);
       }

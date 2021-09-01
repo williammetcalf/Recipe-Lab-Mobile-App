@@ -1,11 +1,14 @@
 import React, { FC, useState } from "react";
 import { FAB, Portal } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { RecipeStepItem } from "../../../types/RecipeStepItem";
 
-export interface AddStepButtonProps {}
+export interface AddStepButtonProps {
+  onAddStep: (stepType: RecipeStepItem["stepType"]) => void;
+}
 
 const AddStepButton: FC<AddStepButtonProps> = (props) => {
-  const {} = props;
+  const { onAddStep } = props;
   const [open, setOpen] = useState(false);
   return (
     <SafeAreaView style={{ position: "absolute", bottom: 32, right: 20 }}>
@@ -18,17 +21,17 @@ const AddStepButton: FC<AddStepButtonProps> = (props) => {
             {
               icon: "group",
               label: "Step Group",
-              onPress: () => console.log("Pressed star"),
+              onPress: () => onAddStep("group"),
             },
             {
               icon: "pencil-box",
               label: "Note",
-              onPress: () => console.log("Pressed note"),
+              onPress: () => onAddStep("note"),
             },
             {
               icon: "food-apple",
               label: "Ingredient",
-              onPress: () => console.log("Pressed email"),
+              onPress: () => onAddStep("ingredient"),
               small: false,
             },
           ]}
