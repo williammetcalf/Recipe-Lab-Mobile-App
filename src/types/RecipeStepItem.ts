@@ -21,6 +21,7 @@ export interface RecipeStepIngredient extends RecipeStepItem {
 export interface RecipeStepGroup extends RecipeStepItem {
   stepType: "group";
   items: (RecipeStepNote | RecipeStepIngredient)[];
+  groupLabel?: string;
 }
 
 export function isNote(step: RecipeStepItem): step is RecipeStepNote {

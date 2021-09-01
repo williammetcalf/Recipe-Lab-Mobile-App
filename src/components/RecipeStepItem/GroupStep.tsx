@@ -1,6 +1,8 @@
+import { TouchableHighlight } from "@gorhom/bottom-sheet";
+import * as Haptics from "expo-haptics";
 import React, { FC, Fragment } from "react";
 import { View } from "react-native";
-import { Divider } from "react-native-paper";
+import { Divider, useTheme } from "react-native-paper";
 import {
   isIngredient,
   isNote,
@@ -13,22 +15,45 @@ import { NoteStep } from "./NoteStep";
 export interface GroupStepProps {
   step: RecipeStepGroup;
   onEdit?: (step: RecipeStepItem) => void;
+  reordering?: boolean;
 }
 
 const GroupStep: FC<GroupStepProps> = (props) => {
   const { step, onEdit } = props;
+  const { roundness } = useTheme();
 
   return (
     <View style={{ flexDirection: "column" }}>
       {step.items.map((innerStep, idx) => {
+        const onLongPress = onEdit
+          ? () => {
+              Haptics.impactAsync();
+              onEdit(innerStep);
+            }
+          : undefined;
         return (
           <Fragment key={innerStep._uid}>
             <View style={{ paddingVertical: 8 }}>
               {isNote(innerStep) && (
-                <NoteStep step={innerStep} onEdit={onEdit} />
+                <TouchableHighlight
+                  onLongPress={onLongPress}
+                  style={{
+                    padding: 8,
+                    borderRadius: roundness,
+                  }}
+                  underlayColor="rgba(255,255,255,0.2)"
+                >
+                  <NoteStep step={innerStep} />
+                </TouchableHighlight>
               )}
               {isIngredient(innerStep) && (
-                <IngredientStep step={innerStep} onEdit={onEdit} />
+                <TouchableHighlight
+                  onLongPress={onLongPress}
+                  style={{ padding: 8, borderRadius: roundness }}
+                  underlayColor="rgba(255,255,255,0.2)"
+                >
+                  <IngredientStep step={innerStep} />
+                </TouchableHighlight>
               )}
             </View>
             {idx < step.items.length - 1 && <Divider />}

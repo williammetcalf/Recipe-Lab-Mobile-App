@@ -5,36 +5,37 @@ import {
   isNote,
   RecipeStepItem,
 } from "../../../types/RecipeStepItem";
-import Paper from "../../Paper";
 import GroupStep from "../GroupStep";
 import { IngredientStep } from "../IngredientStep";
 import { NoteStep } from "../NoteStep";
+import StepContainer from "../StepContainer";
 
 export interface StepItemProps {
   step: RecipeStepItem;
   onEdit?: (step: RecipeStepItem) => void;
+  reordering?: boolean;
 }
 
 const StepItem: FC<StepItemProps> = (props) => {
-  const { step, onEdit } = props;
+  const { step, onEdit, reordering } = props;
 
   if (isNote(step)) {
     return (
-      <Paper style={{ marginBottom: 12 }} alpha={0.2} blurIntensity={70}>
-        <NoteStep step={step} onEdit={onEdit} />
-      </Paper>
+      <StepContainer onEdit={onEdit ? () => onEdit(step) : undefined}>
+        <NoteStep step={step} />
+      </StepContainer>
     );
   } else if (isIngredient(step)) {
     return (
-      <Paper style={{ marginBottom: 12 }} alpha={0.2} blurIntensity={70}>
-        <IngredientStep step={step} onEdit={onEdit} />
-      </Paper>
+      <StepContainer onEdit={onEdit ? () => onEdit(step) : undefined}>
+        <IngredientStep step={step} />
+      </StepContainer>
     );
   } else if (isGroup(step)) {
     return (
-      <Paper style={{ marginBottom: 12 }} alpha={0.2} blurIntensity={70}>
-        <GroupStep step={step} onEdit={onEdit} />
-      </Paper>
+      <StepContainer onEdit={onEdit ? () => onEdit(step) : undefined}>
+        <GroupStep step={step} onEdit={onEdit} reordering={reordering} />
+      </StepContainer>
     );
   }
 

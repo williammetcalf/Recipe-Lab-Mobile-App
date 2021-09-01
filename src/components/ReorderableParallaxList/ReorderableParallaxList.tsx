@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { ListRenderItem, StyleProp, View, ViewStyle } from "react-native";
-import { DraxList, DraxProvider } from "react-native-drax";
+import { DraxList, DraxProvider, DraxView } from "react-native-drax";
 import { Easing, useSharedValue, withTiming } from "react-native-reanimated";
 import ItemWrapper from "./ItemWrapper";
 import ParallaxHeader, { ParallaxHeaderProps } from "./ParallaxHeader";

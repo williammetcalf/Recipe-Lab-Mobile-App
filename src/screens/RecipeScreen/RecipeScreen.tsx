@@ -55,6 +55,7 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
           <StepItem
             step={item.item}
             onEdit={isEditMode ? undefined : setEditStep}
+            reordering={isEditMode}
           />
         )}
         reordering={isEditMode}
