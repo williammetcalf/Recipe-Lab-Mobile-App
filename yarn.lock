@@ -4982,6 +4982,11 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
+fuse.js@^6.4.6:
+  version "6.4.6"
+  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-6.4.6.tgz#62f216c110e5aa22486aff20be7896d19a059b79"
+  integrity sha512-/gYxR/0VpXmWSfZOIPS3rWwU8SHgsRTwWuXhyb2O6s7aRuVtHtxCkR33bNYu3wyLyNx/Wpv0vU7FZy8Vj53VNw==
+
 gensync@^1.0.0-beta.1, gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"
@@ -7895,6 +7900,11 @@ react-native-parallax-scrollview@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-native-parallax-scrollview/-/react-native-parallax-scrollview-3.0.0.tgz#43ad2aeb45b8e4eca3076ce550419871b131bb20"
   integrity sha512-NCw4s6OO2blrvUFnWQHlHEnAzZSik2n6yR2Oyy7QCheih+8U19hwYY/utr4dn1gDVlkBA2FAEy993RMpyo6c2A==
+
+react-native-popover-view@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-popover-view/-/react-native-popover-view-4.0.3.tgz#9b3529d4b4e9dd665a7336ba6b002d5f47e94082"
+  integrity sha512-UB7dMpb/cc/10BQgth2zkFL1jkBbElsW3MvvwoIgncO6FCnJms2C1gEQQDZdFLEG4dOWMPhP5+TZgJ2D6zanfw==
 
 react-native-reanimated@~2.2.0:
   version "2.2.0"

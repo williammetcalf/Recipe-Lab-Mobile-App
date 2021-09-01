@@ -1,11 +1,8 @@
-import React, { FC } from "react";
-import { useRef } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { FC, useEffect, useState } from "react";
+import { View } from "react-native";
 import { Button } from "react-native-paper";
 import { RecipeStepIngredient } from "../../../types/RecipeStepItem";
-import TextInput from "../../TextInput";
-import { TextInput as TextInputNative, View } from "react-native";
+import TypeAhead from "../../TypeAhead";
 
 export interface IngredientStepEditProps {
   step?: RecipeStepIngredient;
@@ -14,9 +11,11 @@ export interface IngredientStepEditProps {
 
 export const editIngredientSnapPoints: [string, string, string] = [
   "10%",
-  "28%",
-  "58%",
+  "50%",
+  "80%",
 ];
+
+const ingredients: string[] = ["Milk", "Flour", "Water", "Eggs", "Whole Milk"];
 
 const defaultNewStep: RecipeStepIngredient = {
   stepType: "ingredient",
@@ -32,19 +31,17 @@ const IngredientStepEdit: FC<IngredientStepEditProps> = (props) => {
 
   return (
     <View>
-      <TextInput
+      <TypeAhead
+        items={ingredients}
+        style={{ backgroundColor: "transparent" }}
         value={editedStep.ingredientName}
         onChangeText={(ingredientName) =>
           setEditedStep({ ...editedStep, ingredientName })
         }
+        label="Ingredient Name"
       />
-      <TextInput
-        value={editedStep.ingredientNote}
-        onChangeText={(ingredientNote) =>
-          setEditedStep({ ...editedStep, ingredientNote })
-        }
-      />
-      <Button onPress={() => onSave(editedStep)}>Save</Button>
+
+      <Button onPress={() => onSave(editedStep)}>save</Button>
     </View>
   );
 };
