@@ -6,7 +6,8 @@
     "slug": "recipe-lab-mobile-app",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
-    "backgroundColor": "#901ff2",
+    "backgroundColor": "#282f3f",
+    "orientation": "portrait",
     "packagerOpts": {
       "config": "metro.config.js",
       "sourceExts": [
