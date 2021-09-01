@@ -2,7 +2,7 @@ import { TouchableHighlight } from "@gorhom/bottom-sheet";
 import { BlurView } from "expo-blur";
 import React, { FC } from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
-import { IconButton } from "react-native-paper";
+import { Avatar } from "react-native-paper";
 
 export interface RecipeScreenHeaderProps {
   isEditMode: boolean;
@@ -23,9 +23,11 @@ const RecipeScreenHeader: FC<RecipeScreenHeaderProps> = (props) => {
         }}
       >
         <BlurView intensity={100}>
-          <IconButton
-            icon={isEditMode ? "close" : "reorder-horizontal"}
+          <Avatar.Icon
+            icon={isEditMode ? "close" : "shuffle-variant"}
             color="white"
+            style={{ backgroundColor: "transparent" }}
+            size={50}
           />
         </BlurView>
       </TouchableHighlight>

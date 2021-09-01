@@ -2,9 +2,8 @@ import React, { FC } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Button } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import { RecipeStepNote } from "../../../types/RecipeStepItem";
-import TextInput from "../../TextInput";
 import { TextInput as TextInputNative, View } from "react-native";
 
 export interface NoteStepEditProps {
@@ -38,6 +37,7 @@ const NoteStepEdit: FC<NoteStepEditProps> = (props) => {
         value={editedStep.noteText}
         onChangeText={(noteText) => setEditedStep({ ...editedStep, noteText })}
         ref={inputRef}
+        label="Note"
       />
       <Button onPress={() => onSave(editedStep)}>Save</Button>
     </View>

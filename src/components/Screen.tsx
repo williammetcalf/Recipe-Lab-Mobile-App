@@ -16,12 +16,12 @@ const Screen: FC<ScreenProps> = (props) => {
       {...rest}
       style={[style, { height: "100%", backgroundColor: colors.background }]}
     >
-      <Background
+      {/* <Background
         width={width}
         height={height}
         preserveAspectRatio="none"
         style={{ position: "absolute", top: 0, left: 0 }}
-      />
+      /> */}
       {children}
     </KeyboardAvoidingView>
   );

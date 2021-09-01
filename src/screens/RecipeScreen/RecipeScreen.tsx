@@ -50,6 +50,7 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
           uri: "https://firebasestorage.googleapis.com/v0/b/recipe-lab-96d4d.appspot.com/o/28e88ab4-1e2d-416e-bc13-3476d3fc690a?alt=media&token=f71a8b70-05df-45e7-bc7a-01ffbfbaf502",
         }}
         HeaderComponent={() => <ParallaxHeader recipeName={recipe?.name} />}
+        contentStyle={{ paddingHorizontal: 4 }}
         renderItem={(item) => (
           <StepItem
             step={item.item}

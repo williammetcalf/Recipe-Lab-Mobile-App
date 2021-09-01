@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ListRenderItem, View } from "react-native";
+import { ListRenderItem, StyleProp, View, ViewStyle } from "react-native";
 import { DraxList, DraxProvider } from "react-native-drax";
 import { Easing, useSharedValue, withTiming } from "react-native-reanimated";
 import ItemWrapper from "./ItemWrapper";
@@ -12,12 +12,13 @@ export interface ReorderableParallaxListProps<T>
   keyExtractor: (item: T) => string;
   renderItem: ListRenderItem<T>;
   reordering?: boolean;
+  contentStyle?: StyleProp<ViewStyle>;
 }
 
 function ReorderableParallaxList<T>(props: ReorderableParallaxListProps<T>) {
   const { data, keyExtractor, renderItem, HeaderComponent } = props;
   const { headerImageSource, headerMinHeight, headerMaxHeight } = props;
-  const { reordering, onReorder } = props;
+  const { reordering, onReorder, contentStyle } = props;
 
   const reorderAnim = useSharedValue(0);
   const scrollOffset = useSharedValue(0);
@@ -59,7 +60,10 @@ function ReorderableParallaxList<T>(props: ReorderableParallaxListProps<T>) {
             newData.splice(toIndex, 0, newData.splice(fromIndex, 1)[0]);
             onReorder(newData);
           }}
-          flatListStyle={{ height: "100%", paddingTop: headerMaxHeight + 12 }}
+          flatListStyle={[
+            { height: "100%", paddingTop: headerMaxHeight + 12 },
+            contentStyle,
+          ]}
           ListFooterComponent={() => (
             <View style={{ height: headerMaxHeight + 12 }} />
           )}

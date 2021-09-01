@@ -32,12 +32,13 @@ export default function App() {
         dark: true,
         colors: {
           ...DarkTheme.colors,
-          surface: "#8D10FF",
-          background: "#111",
+          surface: "#71ceff",
+          background: "#282f3f",
           text: "white",
-          primary: "#a971e8",
-          accent: "#7332bb",
+          primary: "#027dec",
+          accent: "#027dec",
         },
+        roundness: 20,
       }}
     >
       <GlobalLoadingContext.Provider

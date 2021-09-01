@@ -22,7 +22,9 @@ const NoteStep: FC<NoteStepProps> = (props) => {
         hitSlop={{ bottom: 4, top: 4 }}
         delayPressIn={100}
       >
-        <Text>{step.noteText}</Text>
+        <Text style={{ fontStyle: "italic", opacity: 0.7 }}>
+          {step.noteText}
+        </Text>
       </TouchableOpacity>
     );
   }
