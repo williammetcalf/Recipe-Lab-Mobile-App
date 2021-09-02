@@ -16,7 +16,7 @@ const IngredientStep: FC<IngredientStepProps> = (props) => {
       <View style={{ flexDirection: "row" }}>
         <Text style={{ fontWeight: "bold" }}>{step.ingredientName}</Text>
         <View style={{ flex: 1 }} />
-        {step.quantity && <Text>{step.quantity} </Text>}
+        {isNumber(step.quantity) && <Text>{step.quantity} </Text>}
         {step.unit && (
           <Text>{`${step.unit}${
             isNumber(step.quantity) && step.quantity !== 1 ? "s" : ""

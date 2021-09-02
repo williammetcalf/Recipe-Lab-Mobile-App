@@ -2,7 +2,7 @@ import { TouchableHighlight } from "@gorhom/bottom-sheet";
 import { BlurView } from "expo-blur";
 import Fuse from "fuse.js";
 import React, { FC, useMemo, useRef, useState } from "react";
-import { View } from "react-native";
+import { StyleProp, TextStyle, View, ViewStyle } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Portal, Subheading, TextInput } from "react-native-paper";
 import { TextInputProps } from "react-native-paper/lib/typescript/components/TextInput/TextInput";
@@ -13,6 +13,8 @@ import Popover, {
 
 export interface TypeAheadProps extends Omit<TextInputProps, "ref" | "theme"> {
   items: string[];
+  containerStyle?: StyleProp<ViewStyle>;
+  textInputStyle?: StyleProp<TextStyle>;
 }
 
 const fuseConfig: Fuse.IFuseOptions<string> = {
@@ -20,7 +22,7 @@ const fuseConfig: Fuse.IFuseOptions<string> = {
 };
 
 const TypeAhead: FC<TypeAheadProps> = (props) => {
-  const { items, ...rest } = props;
+  const { items, textInputStyle, containerStyle, ...rest } = props;
   const [open, setOpen] = useState(false);
   const [inputDims, setInputDims] = useState({ width: 200, height: 200 });
   const ref = useRef<View>(null);
@@ -35,6 +37,7 @@ const TypeAhead: FC<TypeAheadProps> = (props) => {
   return (
     <View
       ref={ref}
+      style={containerStyle}
       onLayout={(e) => {
         const { width, height } = e.nativeEvent.layout;
         setInputDims({ width, height });
@@ -43,6 +46,7 @@ const TypeAhead: FC<TypeAheadProps> = (props) => {
       <TextInput
         {...rest}
         onChange={() => setOpen(true)}
+        style={textInputStyle}
         onBlur={(e) => {
           rest.onBlur && rest.onBlur(e);
           setOpen(false);

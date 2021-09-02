@@ -8,21 +8,21 @@ export interface RecipeStepItem extends FirebaseObject {
 export interface RecipeStepNote extends RecipeStepItem {
   stepType: "note";
   noteText: string;
-  imageUrl?: string;
+  imageUrl: string | null;
 }
 
 export interface RecipeStepIngredient extends RecipeStepItem {
   stepType: "ingredient";
   ingredientName: string;
-  quantity?: number;
-  unit?: string;
-  ingredientNote?: string;
+  quantity: number | null;
+  unit: string | null;
+  ingredientNote: string | null;
 }
 
 export interface RecipeStepGroup extends RecipeStepItem {
   stepType: "group";
   items: (RecipeStepNote | RecipeStepIngredient)[];
-  groupLabel?: string;
+  groupLabel: string | null;
 }
 
 export function isNote(step: RecipeStepItem): step is RecipeStepNote {
