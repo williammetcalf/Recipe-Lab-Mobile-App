@@ -72,6 +72,19 @@ function ReorderableParallaxList<T>(props: ReorderableParallaxListProps<T>) {
           )}
           ListEmptyComponent={ListEmptyComponent}
           keyExtractor={keyExtractor}
+          renderItemHoverContent={(item) => (
+            <ItemWrapper
+              reorderAnim={reorderAnim}
+              style={{
+                shadowColor: "black",
+                shadowOpacity: 1,
+                shadowRadius: 3,
+                shadowOffset: { height: 0, width: 0 },
+              }}
+            >
+              {renderItem(item)}
+            </ItemWrapper>
+          )}
           renderItemContent={(item) => {
             return (
               <ItemWrapper reorderAnim={reorderAnim}>
