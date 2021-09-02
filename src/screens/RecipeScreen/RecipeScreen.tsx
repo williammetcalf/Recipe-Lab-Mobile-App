@@ -33,11 +33,12 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
     step: RecipeStepItem;
     _parentUid?: string;
   } | null>(null);
+  if (!recipe) return <Screen />;
 
   return (
     <Screen>
       <ReorderableParallaxList
-        data={recipe?.steps || []}
+        data={recipe.steps}
         onReorder={(data) => {
           recipeRef
             .child("steps")
@@ -53,7 +54,7 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
         headerImageSource={{
           uri: "https://firebasestorage.googleapis.com/v0/b/recipe-lab-96d4d.appspot.com/o/28e88ab4-1e2d-416e-bc13-3476d3fc690a?alt=media&token=f71a8b70-05df-45e7-bc7a-01ffbfbaf502",
         }}
-        HeaderComponent={() => <ParallaxHeader recipeName={recipe?.name} />}
+        HeaderComponent={() => <ParallaxHeader recipeName={recipe.name} />}
         contentStyle={{ paddingHorizontal: 4 }}
         renderItem={(item) => (
           <StepItem
@@ -67,10 +68,12 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
           <EmptyState>Press "+" to add steps</EmptyState>
         )}
       />
-      <RecipeScreenHeader
-        isEditMode={isEditMode}
-        onEditModeChange={setIsEditMode}
-      />
+      {recipe.steps.length > 1 ? (
+        <RecipeScreenHeader
+          isEditMode={isEditMode}
+          onEditModeChange={setIsEditMode}
+        />
+      ) : null}
       <AddStepButton
         onAddStep={(stepType: RecipeStepItem["stepType"]) =>
           setEditStep({ step: { stepType } as RecipeStepItem })
@@ -79,12 +82,11 @@ const RecipeScreen: FC<RecipeScreenProps> = (props) => {
       <EditSheet
         step={editStep}
         onSave={(updatedStep, _parentUid) => {
-          console.log(updatedStep, _parentUid);
           const { _uid } = updatedStep;
           if (!_uid) {
             recipeRef
               .child("steps")
-              .push({ ...updatedStep, order: recipe?.steps.length || 0 });
+              .push({ ...updatedStep, order: recipe.steps.length || 0 });
           } else {
             recipeRef
               .child("steps")
