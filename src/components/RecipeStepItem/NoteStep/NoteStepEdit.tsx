@@ -34,6 +34,7 @@ const NoteStepEdit: FC<NoteStepEditProps> = (props) => {
   return (
     <View>
       <TextInput
+        style={{ backgroundColor: "transparent" }}
         value={editedStep.noteText}
         onChangeText={(noteText) => setEditedStep({ ...editedStep, noteText })}
         ref={inputRef}
